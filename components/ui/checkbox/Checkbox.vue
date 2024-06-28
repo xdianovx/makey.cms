@@ -9,14 +9,12 @@ import {
 import { Check } from "lucide-vue-next";
 import { cn } from "@/lib/utils";
 
-const props = defineProps<
-  CheckboxRootProps & { class?: HTMLAttributes["class"] }
->();
+const props = defineProps<{ class?: HTMLAttributes["class"] }>();
+
 const emits = defineEmits<CheckboxRootEmits>();
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;
-
   return delegated;
 });
 
@@ -25,6 +23,8 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
 
 <template>
   <CheckboxRoot
+    :false-value="0"
+    :true-value="1"
     v-bind="forwarded"
     :class="
       cn(
@@ -34,6 +34,8 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
     "
   >
     <CheckboxIndicator
+      :false-value="0"
+      :true-value="1"
       class="flex h-full w-full items-center justify-center text-current"
     >
       <slot>

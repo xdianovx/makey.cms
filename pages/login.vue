@@ -1,13 +1,16 @@
 <script setup>
 definePageMeta({
   layout: "auth",
-  middleware: ["is-logged"],
+  auth: {
+    unauthenticatedOnly: true,
+    navigateAuthenticatedTo: "/products",
+  },
 });
 
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
 import { useForm } from "vee-validate";
-const { signIn, token } = useAuth();
+const { signIn } = useAuth();
 import {
   FormControl,
   FormField,
@@ -17,6 +20,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { toast } from "vue-sonner";
+
+const router = useRouter();
 
 const formSchema = toTypedSchema(
   z.object({
@@ -32,8 +37,10 @@ const form = useForm({
 });
 
 const onSubmit = form.handleSubmit((values) => {
-  signIn(values, navigateTo("/"));
-
+  signIn("credintials", {
+    ...values,
+    callbackUrl: "/products",
+  });
   toast.success("Вы вошли в аккаунт");
 });
 </script>

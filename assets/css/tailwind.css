@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -64,4 +63,33 @@
     --input: 215 27.9% 16.9%;
     --ring: 263.4 70% 50.4%;
   }
+}
+
+input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  background: #000;
+}
+
+[type="file"] {
+  /* Style the color of the message that says 'No file chosen' */
+  color: #878787;
+}
+[type="file"]::-webkit-file-upload-button {
+  background: #ed1c1b;
+  border: 2px solid #ed1c1b;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  outline: none;
+  padding: 10px 25px;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+[type="file"]::-webkit-file-upload-button:hover {
+  background: #fff;
+  border: 2px solid #535353;
+  color: #000;
 }

@@ -5,7 +5,6 @@ definePageMeta({
 
 import Inner from "@/components/ui/Inner";
 import Title from "@/components/ui/Title";
-import { Plus } from "lucide-vue-next";
 const { filterProducts } = productStoreStore();
 const { products, isLoading, params } = storeToRefs(productStoreStore());
 
@@ -26,9 +25,13 @@ filterProducts(params.value);
       <div class="flex items-end">
         <Title>Все товары</Title>
         <div class="ml-auto">
-          <Button
-            ><Plus />
-            <p>Добавить товар</p></Button
+          <NuxtLink
+            to="/products/create"
+            size="sm"
+            variant="outline"
+            class="border rounded md pt-[8px] pb-[10px] leading-[100%] inline-flex items-center gap-2 px-4 text-[14px]"
+          >
+            <p>Добавить товар</p></NuxtLink
           >
         </div>
       </div>
@@ -37,10 +40,9 @@ filterProducts(params.value);
         v-model="params.search"
         placeholder="Поиск по товарам"
       />
-      <!-- {{ products?.data }} -->
       <div
         class="flex flex-col mt-10 gap-2"
-        v-if="products?.data.length > 0"
+        v-if="products?.data?.length > 0"
         :class="{ 'opacity-20': isLoading }"
       >
         <SharedProductRow

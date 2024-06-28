@@ -13,9 +13,7 @@
 <script lang="ts" setup>
 import { Toaster } from "vue-sonner";
 
-definePageMeta({
-  middleware: ["auth"],
-});
+definePageMeta({});
 </script>
 
 <style></style>

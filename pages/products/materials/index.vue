@@ -1,0 +1,138 @@
+<script setup>
+import Inner from "@/components/ui/Inner";
+import Title from "@/components/ui/Title";
+import { EditIcon, Trash } from "lucide-vue-next";
+import { toast } from "vue-sonner";
+import Button from "~/components/ui/button/Button.vue";
+import Input from "~/components/ui/input/Input.vue";
+
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+
+const { get, create, remove, edit } = materialsStore();
+const { materials } = storeToRefs(materialsStore());
+
+const dataRef = ref({
+  title: "",
+});
+
+const updateRef = ref({
+  title: "",
+});
+
+const storeMaterial = async () => {
+  if (dataRef.value.title.length <= 0) {
+    toast.error("Введите название материала");
+  } else {
+    create(dataRef);
+  }
+};
+
+const deleteItem = (slug) => {
+  remove(slug);
+};
+
+get();
+</script>
+
+<template>
+  <Inner>
+    <div class="flex">
+      <Title>Материалы</Title>
+    </div>
+
+    <div class="flex flex-col gap-2 mt-8">
+      <div
+        class="border px-4 py-4 rounded-lg leading-[100%]"
+        v-for="item in materials"
+      >
+        <div class="flex items-start">
+          <h2 class="font-medium leading-none">{{ item.title }}</h2>
+
+          <div class="ml-auto flex gap-1">
+            <!-- Удалить -->
+            <Dialog>
+              <DialogTrigger as-child>
+                <button
+                  class="border rounded-md w-8 h-8 inline-flex items-center justify-center"
+                >
+                  <Trash width="16" class="text-red-700" />
+                </button>
+              </DialogTrigger>
+              <DialogContent class="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Точно удалить?</DialogTitle>
+                  <!-- <DialogDescription> Потом не восстановим </DialogDescription> -->
+                </DialogHeader>
+
+                <div class="flex w-full gap-2">
+                  <DialogClose as-child class="w-full">
+                    <Button @click="deleteItem(item.slug)">Да</Button>
+                  </DialogClose>
+
+                  <DialogClose as-child class="w-full">
+                    <Button variant="outline">Отмена</Button>
+                  </DialogClose>
+                </div>
+              </DialogContent>
+            </Dialog>
+            <!-- Редактировать -->
+            <Dialog>
+              <DialogTrigger as-child>
+                <button
+                  class="border rounded-md w-8 h-8 inline-flex items-center justify-center"
+                >
+                  <EditIcon width="16" class="" />
+                </button>
+              </DialogTrigger>
+              <DialogContent class="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Редактировать</DialogTitle>
+                  <!-- <DialogDescription> Потом не восстановим </DialogDescription> -->
+                </DialogHeader>
+
+                <Input v-model="updateRef.title" />
+                <div class="flex w-full gap-2">
+                  <DialogClose as-child class="w-full">
+                    <Button @click="edit(item.slug, updateRef)"
+                      >Сохранить</Button
+                    >
+                  </DialogClose>
+
+                  <DialogClose as-child class="w-full">
+                    <Button variant="outline">Отмена</Button>
+                  </DialogClose>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
+        </div>
+
+        <div class="flex items-center mt-0 text-sm">
+          <div>Товаров: {{ item.products_count }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8">
+      <Title>Добавить материал</Title>
+
+      <div class="flex flex-col mt-4">
+        <div class="flex flex-col gap-2">
+          <Label>Название материала</Label>
+          <Input required v-model="dataRef.title" />
+        </div>
+        <Button @click="storeMaterial" class="mt-4">Добавить</Button>
+      </div>
+    </div>
+  </Inner>
+</template>
+
+<style lang="scss" scoped></style>

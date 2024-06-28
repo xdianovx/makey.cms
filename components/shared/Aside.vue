@@ -6,6 +6,7 @@ import {
   Layers3,
   ShoppingBag,
   StretchHorizontal,
+  Waves,
 } from "lucide-vue-next";
 import AsideLink from "../ui/AsideLink.vue";
 </script>
@@ -38,6 +39,10 @@ import AsideLink from "../ui/AsideLink.vue";
 
           <AsideLink link="/products/types" text="Коллекции">
             <Boxes width="16" class="group-hover:text-primary" />
+          </AsideLink>
+
+          <AsideLink link="/products/materials" text="Материалы">
+            <Waves width="16" class="group-hover:text-primary" />
           </AsideLink>
         </div>
       </div>

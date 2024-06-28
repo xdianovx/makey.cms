@@ -12,13 +12,13 @@ export const productsGroupsStore = defineStore("myProductsGroupsStore", () => {
       headers: {
         Authorization: `Bearer ${token.value}`,
       },
-    }).then((res) => {
+    }).then((res: any) => {
       groups.value = res;
       loading.value = false;
     });
   };
 
-  const remove = async (slug: string) => {
+  const remove = async (slug: any) => {
     loading.value = true;
     await $fetch(
       API_ROUTE + "/admin/products/groups_product/" + slug + "/delete",
@@ -28,7 +28,7 @@ export const productsGroupsStore = defineStore("myProductsGroupsStore", () => {
           Authorization: `Bearer ${token.value}`,
         },
       }
-    ).then((res) => {
+    ).then((res: any) => {
       get();
       loading.value = false;
     });

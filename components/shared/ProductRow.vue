@@ -4,12 +4,12 @@
       <img
         :src="data.product_files[0]?.file"
         alt=""
-        class="w-20 h-20 rounded-sm"
+        class="w-20 h-20 rounded-sm object-cover"
       />
       <div class="flex flex-col gap-1">
         <NuxtLink
           class="text-md font-medium hover:text-primary"
-          :to="`/products/${data.slug}`"
+          :to="`/products/${data.id}`"
           >{{ data.title }}</NuxtLink
         >
 
@@ -38,20 +38,16 @@
           </DropdownMenuTrigger>
 
           <DropdownMenuContent class="w-[256px]">
-            <DropdownMenuLabel>Действия</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem><p>Активен</p></DropdownMenuItem>
-            <DropdownMenuItem>Редактировать</DropdownMenuItem>
-            <DropdownMenuItem class="text-red-700 flex items-center gap-2">
-              <Trash width="16" />
-              <p>Удалить</p></DropdownMenuItem
+            <DropdownMenuItem
+              class="text-red-700 flex items-center gap-2"
+              @click="deleteProduct(data.id)"
             >
+              <Trash width="16" />
+              <p>Удалить</p>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-
-      <!-- {{ data.category_id }} -->
-      <!-- {{ data.collection_id }} -->
     </div>
   </div>
 </template>
@@ -62,12 +58,19 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import Badge from "../ui/badge/Badge.vue";
-import Label from "../ui/label/Label.vue";
+
+const { deleteProduct } = productStoreStore();
 
 const props = defineProps(["data"]);
 </script>
