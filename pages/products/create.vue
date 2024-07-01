@@ -2,24 +2,9 @@
 import Inner from "@/components/ui/Inner.vue";
 import Title from "@/components/ui/Title.vue";
 
-const router = useRouter();
-
-const { get: getCategories } = categoryStore();
-const { get: getCollections } = collectionStore();
-const { get: getGroups } = productsGroupsStore();
 const { createProduct } = productStoreStore();
-
-const { categories } = storeToRefs(categoryStore());
-const { collections } = storeToRefs(collectionStore());
 const { product } = storeToRefs(productStoreStore());
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { toast } from "vue-sonner";
 import Input from "~/components/ui/input/Input.vue";
 
@@ -42,17 +27,14 @@ const storeProduct = () => {
   } else {
     createProduct(storeData)
       .then(() => {
-        navigateTo(`/products/${product.value.id}`);
+        navigateTo(`/products/${product?.value.id}`);
       })
       .catch((e) => {
+        console.log(e);
         toast.error("Товар с таким названием уже существует");
       });
   }
 };
-
-getCategories();
-getCollections();
-getGroups();
 </script>
 
 <template>
@@ -65,70 +47,6 @@ getGroups();
       required
       class="leading-[100%] mt-8"
     />
-
-    <div class="grid grid-cols-3 gap-2 mt-2">
-      <!--  -->
-      <Select v-model="storeData.category_id">
-        <SelectTrigger class="leading-[100%]">
-          <SelectValue placeholder="Категория" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectItem :value="item.id" v-for="item in categories">
-              {{ item.title }}
-            </SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-
-      <!--  -->
-      <Select v-model="storeData.collection_id">
-        <SelectTrigger class="leading-[100%]">
-          <SelectValue placeholder="Коллекции" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectItem :value="item.id" v-for="item in collections">
-              {{ item.title }}
-            </SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-
-      <!--  -->
-      <Select v-if="storeData.category_id == 1">
-        <SelectTrigger class="leading-[100%]">
-          <SelectValue placeholder="Категория" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectItem :value="item.id" v-for="item in categories">
-              {{ item.title }}
-            </SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-    </div>
-
-    <div class="flex mt-4 gap-4">
-      <div class="flex items-center gap-2">
-        <Checkbox
-          v-model:checked="storeData.is_man"
-          id="isman"
-          :true-value="1"
-        />
-        <label for="isman" class="leading-none">Мужской</label>
-      </div>
-
-      <div class="flex items-center gap-2">
-        <Checkbox
-          v-model:checked="storeData.is_woman"
-          id="iswoman"
-          :true-value="1"
-        />
-        <label for="iswoman" class="leading-none">Женский</label>
-      </div>
-    </div>
 
     <Button class="mt-8" @click="storeProduct">Создать</Button>
   </Inner>
