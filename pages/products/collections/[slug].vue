@@ -1,5 +1,6 @@
 <script setup>
-import { Trash2 } from "lucide-vue-next";
+import { toast } from "vue-sonner";
+import { DeleteButton } from "~/components/ui/button";
 import Button from "~/components/ui/button/Button.vue";
 import Inner from "~/components/ui/Inner.vue";
 import Input from "~/components/ui/input/Input.vue";
@@ -13,9 +14,14 @@ definePageMeta({
 
 const route = useRoute();
 const slug = route.params.slug;
+const currentBannerId = ref();
 
-const { show, update } = collectionStore();
-const { collectionsSingle } = storeToRefs(collectionStore());
+const { show, update, remove, addBanner } = collectionStore();
+const { collectionsSingle, loading } = storeToRefs(collectionStore());
+
+const setCurrenBannerId = (id) => {
+  currentBannerId.value = id;
+};
 
 const updateCollection = () => {
   delete collectionRef.value.sale;
@@ -24,51 +30,80 @@ const updateCollection = () => {
 
 const collectionRef = ref({});
 
-show(slug).then(() => {
-  collectionRef.value = collectionsSingle?.value?.data;
-});
-
 const uploadedImages = ref([]);
 const uploadedImagesPreview = ref([]);
 
-const uploadMultiImage = (e) => {
-  const files = e.target.files;
-  uploadedImages.value = files;
-
-  for (let i = 0; i < files.length; i++) {
-    const reader = new FileReader();
-    reader.onload = function (event) {
-      const imageUrl = event.target.result;
-      uploadedImagesPreview.value.push(imageUrl);
-    };
-    reader.readAsDataURL(files[i]);
-  }
+const deleteItem = async (bannerId) => {
+  await remove(slug, bannerId).then(() => {
+    show(slug).then(() => {
+      collectionRef.value = collectionsSingle?.value?.data;
+    });
+  });
 };
 
-// const uploadMedia = async () => {
-//   let formData = new FormData();
+const addItem = async () => {
+  await addBanner(slug).then(() => {
+    show(slug).then(() => {
+      collectionRef.value = collectionsSingle?.value?.data;
+    });
+  });
+};
 
-//   for (let i = 0; i < uploadedImages.value?.length; i++) {
-//     formData.append(`files[]`, uploadedImages.value[i]);
-//   }
+const uploadDesktopImage = async (e) => {
+  const files = e.target.files[0];
+  let formData = new FormData();
 
-//   await useApi(`/admin/products/${slug}/product_files/store`, {
-//     method: "post",
-//     body: formData,
-//   })
-//     .then(() => {
-//       getProduct(slug);
-//       uploadedImagesPreview.value = [];
-//       toast.success("Файлы успешно загружены");
-//     })
-//     .catch((e) => {
-//       toast.error(e);
-//     });
-// };
+  formData.append(`image`, files);
+
+  await useApi(
+    `/admin/collections/${slug}/banners/${currentBannerId.value}/update?_method=PATCH`,
+    {
+      method: "post",
+      body: formData,
+    }
+  )
+    .then(() => {
+      show(slug).then(() => {
+        collectionRef.value = collectionsSingle?.value?.data;
+      });
+      toast.success("Файлы успешно загружены");
+    })
+    .catch((e) => {
+      toast.error(e);
+    });
+};
+
+const uploadMobileImage = async (e) => {
+  const files = e.target.files[0];
+  let formData = new FormData();
+
+  formData.append(`image_mob`, files);
+
+  await useApi(
+    `/admin/collections/${slug}/banners/${currentBannerId.value}/update?_method=PATCH`,
+    {
+      method: "post",
+      body: formData,
+    }
+  )
+    .then(() => {
+      show(slug).then(() => {
+        collectionRef.value = collectionsSingle?.value?.data;
+      });
+      toast.success("Файлы успешно загружены");
+    })
+    .catch((e) => {
+      toast.error(e);
+    });
+};
+
+show(slug).then(() => {
+  collectionRef.value = collectionsSingle?.value?.data;
+});
 </script>
 
 <template>
-  <Inner>
+  <Inner :class="{ 'opacity-20': loading }">
     <div class="flex items-center">
       <Title>{{ collectionRef?.title }}</Title>
 
@@ -85,7 +120,7 @@ const uploadMultiImage = (e) => {
 
     <hr class="mt-6" />
 
-    <div class="">
+    <div class="mt-6">
       <section class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
           <Label>Название </Label>
@@ -118,49 +153,57 @@ const uploadMultiImage = (e) => {
       <!-- Banners -->
 
       <section class="mt-10">
-        <div class="flex">
+        <div class="flex items-center justify-between">
           <Title class="font-medium">Баннеры</Title>
+
+          <Button @click="addItem(slug)">Добавить баннер</Button>
         </div>
 
-        <div class="flex flex-col gap-10 mt-6">
-          <!--  -->
+        <div class="flex flex-col gap-4 mt-6">
+          <!-- Banner  -->
           <div
-            v-for="media in collectionRef?.collection_banners"
+            v-for="(media, idx) in collectionRef?.collection_banners"
             :key="media.id"
-            class="relative gap-4 flex items-start"
+            class="relative gap-1 flex flex-col bprder border-b pb-4"
           >
-            <div class="h-full w-1/2">
-              <p class="font-medium mb-1">Десктоп</p>
-              <div class="rounded-md -hidden h-[320px]">
-                <img :src="media.image" alt="" class="object-contain h-full" />
+            <!-- Top -->
+            <div class="flex w-full">
+              <h2 class="font-medium">Баннер: {{ idx + 1 }}</h2>
+
+              <div class="ml-auto">
+                <DeleteButton @click="deleteItem(media.id)" />
               </div>
             </div>
 
-            <div class="h-full w-1/2">
-              <p class="font-medium mb-1">Мобайл</p>
-              <div class="rounded-md overflow-hidden h-[320px]">
-                <img
-                  :src="media.image_mob"
-                  alt=""
-                  class="object-contain h-full"
+            <!-- Images -->
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <h3 class="font-medium text-sm">ПК</h3>
+                <div class="h-[400px] mt-2">
+                  <img
+                    :src="media?.image"
+                    class="object-cover h-full bg-gray-200 rounded-lg w-full"
+                  />
+                </div>
+                <UploadBtn
+                  class="mt-2"
+                  @change="uploadDesktopImage"
+                  @click="setCurrenBannerId(media.id)"
+                />
+              </div>
+              <div>
+                <h3 class="font-medium text-sm">Мобильное</h3>
+                <div class="h-[400px] mt-2 bg-gray-200 rounded-lg">
+                  <img :src="media?.image_mob" class="object-cover h-full" />
+                </div>
+                <UploadBtn
+                  class="mt-2"
+                  @change="uploadMobileImage"
+                  @click="setCurrenBannerId(media.id)"
                 />
               </div>
             </div>
-            <!-- <div class="">
-              <p class="font-medium">Десктоп</p>
-              <img
-                :src="media.image"
-                alt=""
-                class="w-auto object-contain h-full block mt-2 rounded-md"
-              />
-            </div>
-
-            <div class="">
-              <p class="font-medium">Мобильное</p>
-              <img :src="media.image_mob" alt="" class="w-auto mt-2" />
-            </div>-->
           </div>
-          <!--  -->
         </div>
       </section>
 
@@ -177,38 +220,6 @@ const uploadMultiImage = (e) => {
           />
         </div>
       </section>
-    </div>
-
-    <!-- Banners -->
-    <div>
-      <!-- <UploadBtn @change.prevent="uploadMultiImage" />
-
-      <div class="mt-2 flex flex-col gap-2 mb-4">
-        <div
-          v-for="(item, idx) in uploadedImagesPreview"
-          :key="item"
-          class="w-full overflow-hidden rounded-lg relative"
-        >
-          <img :src="item" class="block w-full" />
-
-          <div class="absolute top-2 right-2 z-10">
-            <button
-              @click="uploadedImagesPreview.splice(idx, 1)"
-              class="bg-white border rounded-md w-8 h-8 flex items-center justify-center"
-            >
-              <Trash2 width="16" class="text-red-700" />
-            </button>
-          </div>
-        </div>
-
-        <button
-          @click="uploadMedia($event)"
-          v-if="uploadedImagesPreview.length > 0"
-          class="border pt-[13px] pb-[15px] px-2 leading-[100%] transition-colors ease-in-out duration-200 rounded-lg hover:bg-primary hover:text-white"
-        >
-          Сохранить изображения
-        </button>
-      </div> -->
     </div>
   </Inner>
 </template>

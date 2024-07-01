@@ -51,5 +51,63 @@ export const collectionStore = defineStore("collectionStores", () => {
       });
   };
 
-  return { collections, get, show, collectionsSingle, update };
+  const remove = async (collectionId: any, bannerId: any) => {
+    loading.value = true;
+    await $fetch(
+      API_ROUTE +
+        `/admin/collections/${collectionId}/banners/${bannerId}/delete`,
+      {
+        method: "delete",
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+        },
+      }
+    )
+      .then((res: any) => {
+        show(collectionId).then(() => {
+          loading.value = false;
+          toast.success("Баннер удален");
+        });
+      })
+      .catch((e) => {
+        toast.error(e);
+        loading.value = false;
+        toast.success("Ошибка удаления");
+      });
+  };
+
+  const addBanner = async (collectionId: any) => {
+    loading.value = true;
+    await $fetch(
+      API_ROUTE + `/admin/collections/${collectionId}/banners/store`,
+      {
+        method: "post",
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+        },
+      }
+    )
+      .then((res: any) => {
+        show(collectionId).then(() => {
+          loading.value = false;
+          toast.success("Баннер добавлен");
+        });
+      })
+      .catch((e) => {
+        toast.error(e);
+        loading.value = false;
+        toast.success("Ошибка удаления");
+      });
+  };
+
+  return {
+    collections,
+    get,
+    show,
+    collectionsSingle,
+    update,
+    remove,
+    loading,
+    addBanner,
+  };
 });
