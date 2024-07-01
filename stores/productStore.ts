@@ -73,6 +73,7 @@ export const productStoreStore = defineStore("myProductStoreStore", () => {
       params: value,
     }).then((res) => {
       products.value = res;
+
       isLoading.value = false;
     });
   };
@@ -97,6 +98,7 @@ export const productStoreStore = defineStore("myProductStoreStore", () => {
 
   const createProduct = async (body: any) => {
     isLoading.value = true;
+
     await $fetch(API_ROUTE + "/admin/products/store", {
       headers: {
         Authorization: `Bearer ${token.value}`,
@@ -104,7 +106,8 @@ export const productStoreStore = defineStore("myProductStoreStore", () => {
       method: "POST",
       body: body.value,
     }).then((res) => {
-      products.value = res;
+      console.log(res, "asdasdasd");
+      product.value = res;
       isLoading.value = false;
     });
   };
@@ -132,9 +135,10 @@ export const productStoreStore = defineStore("myProductStoreStore", () => {
       method: "DELETE",
     })
       .then((res) => {
-        getProducts();
-        isLoading.value = false;
-        toast.success("Товар удален");
+        getProducts().then(() => {
+          isLoading.value = false;
+          toast.success("Товар удален");
+        });
       })
       .catch(() => {
         isLoading.value = false;

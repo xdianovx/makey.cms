@@ -3,17 +3,33 @@ import Inner from "~/components/ui/Inner.vue";
 import Title from "~/components/ui/Title.vue";
 import { Plus, Settings2, Trash } from "lucide-vue-next";
 import { toast } from "vue-sonner";
+import Button from "~/components/ui/button/Button.vue";
+import Input from "~/components/ui/input/Input.vue";
+import Label from "~/components/ui/label/Label.vue";
+import { DeleteButton, EditButton } from "~/components/ui/button";
 
-const { get, remove } = productsGroupsStore();
+const { get, remove, create } = productsGroupsStore();
 const { groups, loading } = storeToRefs(productsGroupsStore());
 
-get();
+const dataRef = ref({
+  title: "",
+});
 
 const deleteItem = (id) => {
   remove(id).then(() => {
     toast.error("Группа успешно удалена", {});
   });
 };
+
+const createItem = async () => {
+  if (dataRef.value.title.length > 0) {
+    await create(dataRef.value);
+  } else {
+    toast.error("Введите название группы");
+  }
+};
+
+get();
 </script>
 
 <template>
@@ -38,15 +54,22 @@ const deleteItem = (id) => {
           </div>
         </div>
 
-        <div class="ml-auto">
-          <Button
-            variant="outline"
-            class="py-2 border-red-700"
-            @click="deleteItem(item.slug)"
-          >
-            <Trash width="16" class="text-red-700" />
-          </Button>
+        <div class="ml-auto gap-1 flex">
+          <DeleteButton @click="deleteItem(item.slug)" />
+          <EditButton />
         </div>
+      </div>
+    </div>
+
+    <div class="section mt-8">
+      <Title>Добавить новую группу</Title>
+
+      <div class="flex flex-col mt-4">
+        <div class="flex flex-col gap-2">
+          <Label>Название материала</Label>
+          <Input required v-model="dataRef.title" />
+        </div>
+        <Button class="mt-4" @click="createItem">Добавить</Button>
       </div>
     </div>
 

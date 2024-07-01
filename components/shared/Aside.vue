@@ -37,7 +37,7 @@ import AsideLink from "../ui/AsideLink.vue";
             <Layers3 width="16" class="group-hover:text-primary" />
           </AsideLink>
 
-          <AsideLink link="/products/types" text="Коллекции">
+          <AsideLink link="/products/collections" text="Коллекции">
             <Boxes width="16" class="group-hover:text-primary" />
           </AsideLink>
 
@@ -46,6 +46,8 @@ import AsideLink from "../ui/AsideLink.vue";
           </AsideLink>
         </div>
       </div>
+
+      <hr />
     </div>
   </aside>
 </template>

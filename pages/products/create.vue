@@ -11,7 +11,7 @@ const { createProduct } = productStoreStore();
 
 const { categories } = storeToRefs(categoryStore());
 const { collections } = storeToRefs(collectionStore());
-
+const { product } = storeToRefs(productStoreStore());
 import {
   Select,
   SelectContent,
@@ -36,17 +36,16 @@ const storeData = ref({
   type_id: "",
 });
 
-const storeProduct = async () => {
+const storeProduct = () => {
   if (storeData.value.title.length <= 0) {
     toast.error("Введите название товара");
   } else {
-    await createProduct(storeData)
+    createProduct(storeData)
       .then(() => {
-        router.push(`/products`);
+        navigateTo(`/products/${product.value.id}`);
       })
       .catch((e) => {
-        toast.error("Ошибка создания товара");
-        console.log(e);
+        toast.error("Товар с таким названием уже существует");
       });
   }
 };
@@ -59,8 +58,6 @@ getGroups();
 <template>
   <Inner>
     <Title>Создать товар</Title>
-
-    {{ storeData }}
 
     <Input
       placeholder="Название товара"
