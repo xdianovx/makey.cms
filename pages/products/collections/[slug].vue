@@ -30,9 +30,6 @@ const updateCollection = () => {
 
 const collectionRef = ref({});
 
-const uploadedImages = ref([]);
-const uploadedImagesPreview = ref([]);
-
 const deleteItem = async (bannerId) => {
   await remove(slug, bannerId).then(() => {
     show(slug).then(() => {
@@ -50,6 +47,7 @@ const addItem = async () => {
 };
 
 const uploadDesktopImage = async (e) => {
+  loading.value = true;
   const files = e.target.files[0];
   let formData = new FormData();
 
@@ -66,14 +64,17 @@ const uploadDesktopImage = async (e) => {
       show(slug).then(() => {
         collectionRef.value = collectionsSingle?.value?.data;
       });
+      loading.value = false;
       toast.success("Файлы успешно загружены");
     })
     .catch((e) => {
+      loading.value = false;
       toast.error(e);
     });
 };
 
 const uploadMobileImage = async (e) => {
+  loading.value = true;
   const files = e.target.files[0];
   let formData = new FormData();
 
@@ -90,9 +91,11 @@ const uploadMobileImage = async (e) => {
       show(slug).then(() => {
         collectionRef.value = collectionsSingle?.value?.data;
       });
+      loading.value = false;
       toast.success("Файлы успешно загружены");
     })
     .catch((e) => {
+      loading.value = false;
       toast.error(e);
     });
 };

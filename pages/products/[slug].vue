@@ -331,12 +331,12 @@ getColors();
 
           <div class="flex flex-col gap-2">
             <Label>Артикул</Label>
-            <Input type="number" v-model="productRef.vendor_code" />
+            <Input type="text" v-model="productRef.vendor_code" />
           </div>
 
           <div class="flex flex-col gap-2">
             <Label>Штрихкод</Label>
-            <Input type="number" v-model="productRef.barcode" />
+            <Input type="text" v-model="productRef.barcode" />
           </div>
         </div>
 
