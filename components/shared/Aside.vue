@@ -4,6 +4,7 @@ import {
   Component,
   House,
   Layers3,
+  Palette,
   ShoppingBag,
   StretchHorizontal,
   Waves,
@@ -43,6 +44,10 @@ import AsideLink from "../ui/AsideLink.vue";
 
           <AsideLink link="/products/materials" text="Материалы">
             <Waves width="16" class="group-hover:text-primary" />
+          </AsideLink>
+
+          <AsideLink link="/products/colors" text="Цвета">
+            <Palette width="16" class="group-hover:text-primary" />
           </AsideLink>
         </div>
       </div>
