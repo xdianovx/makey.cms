@@ -1,5 +1,6 @@
 <script setup>
 import {
+  Box,
   Boxes,
   Component,
   House,
@@ -49,6 +50,20 @@ import AsideLink from "../ui/AsideLink.vue";
           <AsideLink link="/products/colors" text="Цвета">
             <Palette width="16" class="group-hover:text-primary" />
           </AsideLink>
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="flex flex-col">
+        <AsideLink link="/orders" text="Заказы">
+          <Box width="16" class="group-hover:text-primary" />
+        </AsideLink>
+
+        <div class="pl-6 mt-2 flex gap-1 flex-col">
+          <!-- <AsideLink link="/products/categories" text="Категории">
+            <StretchHorizontal width="16" class="group-hover:text-primary" />
+          </AsideLink> -->
         </div>
       </div>
 
