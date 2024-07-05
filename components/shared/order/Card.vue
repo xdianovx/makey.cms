@@ -1,10 +1,96 @@
 <script setup>
 import Status from "../../ui/order/Status.vue";
+import Product from "../../ui/order/Product.vue";
+import MenuButton from "../../ui/button/Menu.vue";
+
+const props = defineProps(["data"]);
 </script>
 
 <template>
+  <!-- <pre>
+
+    {{ data.products }}
+  </pre> -->
   <div class="rounded-lg bg-gray-100 p-4">
-    <Status status-id="1" />
+    <div class="flex">
+      <Status :status-id="data.status?.id" />
+
+      <div class="ml-auto flex gap-4 items-center">
+        <div class="text-red-600 leading-[100%]">
+          {{ data.total_price }} BYN
+        </div>
+        <MenuButton class="ml-auto" />
+      </div>
+    </div>
+
+    <div class="mt-4 flex text-gray-500 text-[14px]">
+      <p>{{ data.order_num }}</p>
+      <div class="ml-auto flex items-center gap-2">
+        <div>01.02.2024</div>
+        <div class="w-[1px] bg-gray-300 h-3"></div>
+        <div>08:24</div>
+      </div>
+    </div>
+
+    <div class="mt-4 h-[1px] bg-gray-300"></div>
+
+    <div
+      class="mt-4 text-[14px] leading-[100%] gap-4 grid grid-cols-1"
+      v-if="data.client"
+    >
+      <div class="flex flex-col gap-3">
+        <div class="font-medium">
+          {{ data.client?.first_name }} {{ data.client?.last_name }}
+        </div>
+        <div>{{ data.client.phone }}</div>
+        <div>{{ data.client.email }}</div>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <div class="font-medium">{{ data.order_delivery_method.title }}</div>
+        <div>
+          {{ data?.profile_client_address?.index }}
+          г. {{ data?.profile_client_address.locality }} ул.
+          {{ data?.profile_client_address.street }}
+          д. {{ data?.profile_client_address.house }}, кв.
+          {{ data?.profile_client_address.flat }}
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <div class="font-medium">{{ data?.order_payment_method.title }}</div>
+        <div>
+          {{
+            data?.comment_payment ? data?.comment_payment : "Комментариев нет"
+          }}
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="mt-6 flex flex-col">
+      <Product />
+      <Product />
+      <Product />
+    </div> -->
+
+    <div class="mt-6">
+      <div class="font-medium">Товары</div>
+      <div class="bg-white px-4 py-3 mt-1 rounded-md flex flex-col gap-3">
+        <div
+          class="leading-[100%] flex"
+          v-for="item in data?.products"
+          :key="item.id"
+        >
+          <div>{{ item.title }} ({{ item.quantity }})</div>
+
+          <div class="ml-auto">{{ item.price * item.quantity }} BYN</div>
+        </div>
+
+        <div class="mt-2 flex justify-end font-medium">
+          Итого: {{ data.total_price }}
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
