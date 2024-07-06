@@ -6,7 +6,7 @@ import SearchInput from "~/components/ui/form/SearchInput.vue";
 const { get } = ordersStore();
 const { orders } = storeToRefs(ordersStore());
 
-await get();
+get();
 </script>
 
 <template>

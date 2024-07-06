@@ -3,6 +3,16 @@ import Status from "../../ui/order/Status.vue";
 import Product from "../../ui/order/Product.vue";
 import MenuButton from "../../ui/button/Menu.vue";
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { EditIcon, Trash, User } from "lucide-vue-next";
+
 const props = defineProps(["data"]);
 </script>
 
@@ -19,7 +29,47 @@ const props = defineProps(["data"]);
         <div class="text-red-600 leading-[100%]">
           {{ data.total_price }} BYN
         </div>
-        <MenuButton class="ml-auto" />
+
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <MenuButton class="ml-auto" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>
+              <NuxtLink
+                :to="`/orders/${data?.id}`"
+                class="flex gap-2 items-center"
+              >
+                <EditIcon width="16" />
+                <span>Редактировать</span>
+              </NuxtLink>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem>
+              <NuxtLink to="/users" class="flex gap-2 items-center">
+                <User width="16" />
+                <span>Перейти к пользователю</span>
+              </NuxtLink>
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel>Изменить статус</DropdownMenuLabel>
+            <DropdownMenuItem>В ожидании </DropdownMenuItem>
+            <DropdownMenuItem>В обработке </DropdownMenuItem>
+            <DropdownMenuItem>Оплачен </DropdownMenuItem>
+            <DropdownMenuItem>Отправлен </DropdownMenuItem>
+            <DropdownMenuItem>Доставлен </DropdownMenuItem>
+            <DropdownMenuItem>Аннулирован </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <div class="flex gap-2 items-center text-red-500 cursor-pointer">
+                <Trash width="16" />
+                <span>Отменить заказ</span>
+              </div>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
 

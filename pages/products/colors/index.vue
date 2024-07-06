@@ -10,6 +10,8 @@ import Input from "~/components/ui/input/Input.vue";
 const { get: getColors, createNew, deleteItem } = colorsStore();
 const { colors, loading } = storeToRefs(colorsStore());
 
+getColors();
+
 const isCreateModalShow = ref(false);
 const createColorRef = ref({
   title: "",
@@ -25,8 +27,6 @@ const addColor = async () => {
     showCreateModal();
   });
 };
-
-await getColors();
 </script>
 
 <template>

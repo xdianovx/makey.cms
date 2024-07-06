@@ -1,4 +1,6 @@
 <template>
+  <NuxtLoadingIndicator color="#000" />
+
   <div>
     <slot />
     <Toaster />

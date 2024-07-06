@@ -5,13 +5,15 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="tag red" v-if="statusId == 1">Не оплачен</div>
-  <div class="tag yellow" v-if="statusId == 2">В обработке</div>
-  <div class="tag green" v-if="statusId == 3">Оплачен</div>
-  <div class="tag green" v-if="statusId == 4">Отправлен</div>
-  <div class="tag red" v-if="statusId == 5">Аннулирован</div>
-  <div class="tag green" v-if="statusId == 6">Готов к выдаче</div>
-  <div class="tag green" v-if="statusId == 7">Доставлен</div>
+  <div v-bind="$attrs" class="tag red" v-if="statusId == 1">Не оплачен</div>
+  <div v-bind="$attrs" class="tag yellow" v-if="statusId == 2">В обработке</div>
+  <div v-bind="$attrs" class="tag green" v-if="statusId == 3">Оплачен</div>
+  <div v-bind="$attrs" class="tag green" v-if="statusId == 4">Отправлен</div>
+  <div v-bind="$attrs" class="tag red" v-if="statusId == 5">Аннулирован</div>
+  <div v-bind="$attrs" class="tag green" v-if="statusId == 6">
+    Готов к выдаче
+  </div>
+  <div v-bild="$attrs" class="tag green" v-if="statusId == 7">Доставлен</div>
 </template>
 
 <style lang="scss" scoped>

@@ -39,7 +39,7 @@ const form = useForm({
 const onSubmit = form.handleSubmit((values) => {
   signIn("credintials", {
     ...values,
-    callbackUrl: "/products",
+    callbackUrl: "/",
   });
   toast.success("Вы вошли в аккаунт");
 });

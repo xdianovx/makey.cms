@@ -8,6 +8,7 @@ import {
   Palette,
   ShoppingBag,
   StretchHorizontal,
+  User,
   Waves,
 } from "lucide-vue-next";
 import AsideLink from "../ui/AsideLink.vue";
@@ -68,6 +69,18 @@ import AsideLink from "../ui/AsideLink.vue";
       </div>
 
       <hr />
+
+      <div class="flex flex-col">
+        <AsideLink link="/users" text="Пользователи">
+          <User width="16" class="group-hover:text-primary" />
+        </AsideLink>
+
+        <div class="pl-6 mt-2 flex gap-1 flex-col">
+          <!-- <AsideLink link="/products/categories" text="Категории">
+            <StretchHorizontal width="16" class="group-hover:text-primary" />
+          </AsideLink> -->
+        </div>
+      </div>
     </div>
   </aside>
 </template>
