@@ -40,8 +40,11 @@ const onSubmit = form.handleSubmit((values) => {
   signIn("credintials", {
     ...values,
     callbackUrl: "/",
-  });
+  }).then(() => {
   toast.success("Вы вошли в аккаунт");
+    }).catch(e => {
+        toast.error("Неверный логин или пароль");
+    });
 });
 </script>
 
