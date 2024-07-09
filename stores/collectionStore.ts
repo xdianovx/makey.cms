@@ -51,6 +51,24 @@ export const collectionStore = defineStore("collectionStores", () => {
       });
   };
 
+  const create = async (data: any) => {
+    loading.value = true;
+    await $fetch(API_ROUTE + `/admin/collections/store`, {
+      body: data,
+      method: "post",
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+    })
+      .then((res: any) => {
+        loading.value = false;
+        navigateTo(`/products/collections/${res.id}`);
+      })
+      .catch((e) => {
+        toast.error(e);
+      });
+  };
+
   const remove = async (collectionId: any, bannerId: any) => {
     loading.value = true;
     await $fetch(
@@ -67,6 +85,27 @@ export const collectionStore = defineStore("collectionStores", () => {
         show(collectionId).then(() => {
           loading.value = false;
           toast.success("Баннер удален");
+        });
+      })
+      .catch((e) => {
+        toast.error(e);
+        loading.value = false;
+        toast.success("Ошибка удаления");
+      });
+  };
+
+  const removeCollection = async (collectionId: any) => {
+    loading.value = true;
+    await $fetch(API_ROUTE + `/admin/collections/${collectionId}/delete`, {
+      method: "delete",
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+    })
+      .then((res: any) => {
+        get().then(() => {
+          loading.value = false;
+          toast.success("Коллекция удалена");
         });
       })
       .catch((e) => {
@@ -109,5 +148,7 @@ export const collectionStore = defineStore("collectionStores", () => {
     remove,
     loading,
     addBanner,
+    create,
+    removeCollection,
   };
 });

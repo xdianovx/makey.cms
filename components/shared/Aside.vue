@@ -61,11 +61,11 @@ import AsideLink from "../ui/AsideLink.vue";
           <Box width="16" class="group-hover:text-primary" />
         </AsideLink>
 
-        <div class="pl-6 mt-2 flex gap-1 flex-col">
-          <!-- <AsideLink link="/products/categories" text="Категории">
+        <!-- <div class="pl-6 mt-2 flex gap-1 flex-col">
+          <AsideLink link="/products/categories" text="Категории">
             <StretchHorizontal width="16" class="group-hover:text-primary" />
-          </AsideLink> -->
-        </div>
+          </AsideLink>
+        </div> -->
       </div>
 
       <hr />
@@ -75,12 +75,13 @@ import AsideLink from "../ui/AsideLink.vue";
           <User width="16" class="group-hover:text-primary" />
         </AsideLink>
 
-        <div class="pl-6 mt-2 flex gap-1 flex-col">
-          <!-- <AsideLink link="/products/categories" text="Категории">
+        <!-- <div class="pl-6 mt-2 flex gap-1 flex-col">
+          <AsideLink link="/products/categories" text="Категории">
             <StretchHorizontal width="16" class="group-hover:text-primary" />
-          </AsideLink> -->
-        </div>
+          </AsideLink>
+        </div> -->
       </div>
+      <hr />
     </div>
   </aside>
 </template>

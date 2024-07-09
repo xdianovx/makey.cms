@@ -1,12 +1,17 @@
 <script setup>
 import Inner from "@/components/ui/Inner";
 import Title from "@/components/ui/Title";
-import { DotSquare, GripVertical, LucideDotSquare } from "lucide-vue-next";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
-const { get } = collectionStore();
+const { get, removeCollection } = collectionStore();
 const { collections } = storeToRefs(collectionStore());
 
 get();
+
+const deleteCollection = async (id) => {
+  removeCollection(id);
+  console.log(id);
+};
 </script>
 
 <template>
@@ -14,7 +19,11 @@ get();
     <div class="flex items-end">
       <Title>Коллекции</Title>
       <div class="ml-auto">
-        <Button>Создать коллекцию</Button>
+        <NuxtLink
+          to="/products/collections/create"
+          class="leading-[100%] border border-gray-300 rounded-md px-4 pt-2 pb-[9px]"
+          >Создать коллекцию</NuxtLink
+        >
       </div>
     </div>
 
@@ -22,16 +31,15 @@ get();
       <!-- Item -->
       <div v-for="item in collections" :key="item.id" class="border-b pb-8">
         <div class="flex items-center">
-          <NuxtLink :to="'collections/' + item.id" class="font-medium">{{
-            item.title
-          }}</NuxtLink>
+          <NuxtLink
+            :to="'collections/' + item.id"
+            class="font-medium transition-colors duration-200 ease-in-out hover:text-primary"
+          >
+            {{ item.title }}
+          </NuxtLink>
 
           <div class="ml-auto">
-            <button
-              class="w-8 h-8 border rounded-sm cursor-pointer flex items-center justify-center"
-            >
-              <GripVertical width="16" />
-            </button>
+            <DeleteButton @click="deleteCollection(item.id)" />
           </div>
         </div>
         <div class="flex gap-4 mt-1 text-gray-500">

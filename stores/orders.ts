@@ -52,5 +52,30 @@ export const ordersStore = defineStore("myOrdersStore", () => {
     });
   };
 
-  return { orders, order, loading, get, getOne, updateOrder };
+  const updateStatus = async (orderId: any, statusId: any) => {
+    loading.value = true;
+    await $fetch(
+      API_ROUTE + `/admin/orders/${orderId}/change_status?_method=PATCH`,
+      {
+        method: "POST",
+        body: {
+          status_id: statusId,
+        },
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+        },
+        onResponseError({ response }) {
+          console.log(response?._data);
+
+          toast.error("Ошибка обновления статуса");
+        },
+      }
+    ).then((res: any) => {
+      order.value = res;
+      loading.value = false;
+      toast.success("Статус заказа успешно обновлен");
+    });
+  };
+
+  return { orders, order, loading, get, getOne, updateOrder, updateStatus };
 });

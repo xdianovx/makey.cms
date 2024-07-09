@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Plus, Settings2 } from "lucide-vue-next";
+import { Settings2 } from "lucide-vue-next";
 import Inner from "~/components/ui/Inner.vue";
 import Title from "~/components/ui/Title.vue";
 
@@ -7,15 +7,29 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 import Button from "~/components/ui/button/Button.vue";
 
-const { get } = categoryStore();
+const { get, createNew, deleteItem } = categoryStore();
 const { categories } = storeToRefs(categoryStore());
+
+const createCateforyRef = ref({
+  title: "",
+  is_active: 1,
+});
+
+const isCreateModalShow = ref(false);
+const showCreateModal = () => {
+  isCreateModalShow.value = !isCreateModalShow.value;
+};
+
+const addCategory = async () => {
+  await createNew(createCateforyRef.value).then(() => {
+    showCreateModal();
+  });
+};
 
 get();
 </script>
@@ -25,15 +39,36 @@ get();
     <div class="flex items-end">
       <Title>Категории</Title>
       <div class="ml-auto">
-        <Button><Plus /></Button>
+        <Button @click="showCreateModal">Добавить категорию</Button>
       </div>
     </div>
+
+    <Dialog :open="isCreateModalShow" :onUpdate:open="showCreateModal">
+      <DialogContent>
+        <Title>Добавить категорию</Title>
+
+        <div class="flex flex-col gap-2">
+          <Label>Название категории</Label>
+          <Input
+            required
+            placeholder="Название категории"
+            v-model="createCateforyRef.title"
+          />
+        </div>
+
+        <Button @click="addCategory"> Добавить</Button>
+      </DialogContent>
+    </Dialog>
 
     <div class="flex flex-col mt-10 gap-2">
       <div v-for="item in categories" class="border px-5 py-4 rounded-lg">
         <div class="flex">
           <div class="flex flex-col">
-            <h2 class="text-md leading-[100%] font-medium">{{ item.title }}</h2>
+            <NuxtLink
+              :to="`/products/categories/${item.id}`"
+              class="font-medium transition-colors duration-200 ease-in-out hover:text-primary"
+              >{{ item.title }}</NuxtLink
+            >
             <p class="mt-2 text-sm text-gray-600 leading-[100%]">
               Товаров в категории: {{ item.products_count }}
             </p>
@@ -47,8 +82,14 @@ get();
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem>Редактировать</DropdownMenuItem>
-                <DropdownMenuItem>Удалить</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <NuxtLink :to="`/products/categories/${item.id}`"
+                    >Редактировать</NuxtLink
+                  >
+                </DropdownMenuItem>
+                <DropdownMenuItem @click="deleteItem(item.id)"
+                  >Удалить</DropdownMenuItem
+                >
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
