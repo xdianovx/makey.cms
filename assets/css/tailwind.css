@@ -65,6 +65,10 @@
   }
 }
 
+a {
+  @apply transition-colors duration-200 ease-in-out hover:text-primary
+}
+
 input[type="checkbox"] {
   width: 16px;
   height: 16px;
