@@ -1,6 +1,5 @@
 <script setup>
 import Status from "../../ui/order/Status.vue";
-import Product from "../../ui/order/Product.vue";
 import MenuButton from "../../ui/button/Menu.vue";
 
 import {
