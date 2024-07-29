@@ -146,6 +146,25 @@ export const productStoreStore = defineStore("myProductStoreStore", () => {
       });
   };
 
+  const updateProductSort = async (id: any, sort: any) => {
+    isLoading.value = true;
+    await $fetch(API_ROUTE + `/admin/products/${id}/change_order_products`, {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+      body: { sort: sort },
+      method: "POST",
+    })
+      .then((res) => {
+        products.value = res;
+        isLoading.value = false;
+      })
+      .catch(() => {
+        isLoading.value = false;
+        toast.error("Что-то пошло не так");
+      });
+  };
+
   const deleteImage = async (productId: any, imageId: any) => {
     isLoading.value = true;
     await $fetch(
@@ -180,5 +199,6 @@ export const productStoreStore = defineStore("myProductStoreStore", () => {
     changeMainImage,
     createProduct,
     updateProduct,
+    updateProductSort,
   };
 });

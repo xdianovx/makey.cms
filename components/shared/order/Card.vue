@@ -28,7 +28,6 @@ const props = defineProps(["data"]);
         <div class="text-red-600 leading-[100%]">
           {{ data.total_price }} BYN
         </div>
-
         <DropdownMenu>
           <DropdownMenuTrigger>
             <MenuButton class="ml-auto" />

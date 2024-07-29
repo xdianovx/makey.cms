@@ -1,3 +1,26 @@
+<script setup>
+import { Settings, Settings2, Trash } from "lucide-vue-next";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import Badge from "../ui/badge/Badge.vue";
+
+const { deleteProduct } = productStoreStore();
+
+const props = defineProps(["data"]);
+</script>
+
 <template>
   <div class="rounded-lg border p-2 pr-4 relative">
     <div class="flex items-start gap-4">
@@ -6,6 +29,7 @@
         alt=""
         class="w-20 h-20 rounded-sm object-cover"
       />
+
       <div class="flex flex-col gap-1">
         <NuxtLink
           class="text-md font-medium hover:text-primary"
@@ -39,6 +63,15 @@
 
           <DropdownMenuContent class="w-[256px]">
             <DropdownMenuItem
+              class="flex items-center gap-2"
+              @click="deleteProduct(data.id)"
+            >
+              Порядок:
+              <Input type="number" v-model="data.sort" />
+              <Button>Применить</Button>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
               class="text-red-700 flex items-center gap-2"
               @click="deleteProduct(data.id)"
             >
@@ -51,28 +84,5 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { Settings, Settings2, Trash } from "lucide-vue-next";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import Badge from "../ui/badge/Badge.vue";
-
-const { deleteProduct } = productStoreStore();
-
-const props = defineProps(["data"]);
-</script>
 
 <style></style>

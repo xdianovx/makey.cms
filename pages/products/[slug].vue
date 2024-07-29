@@ -15,10 +15,14 @@ definePageMeta({
 
 const route = useRoute();
 const slug = route.params.slug;
-const token = useCookie("auth.token");
 
-const { getProduct, changeMainImage, updateProduct, deleteImage } =
-  productStoreStore();
+const {
+  getProduct,
+  changeMainImage,
+  updateProductSort,
+  updateProduct,
+  deleteImage,
+} = productStoreStore();
 const { get: getCategories } = categoryStore();
 const { get: getCollections } = collectionStore();
 const { get: getTypes } = typesStore();
@@ -114,8 +118,12 @@ const storeProduct = async () => {
     });
 };
 
+const newSortValue = ref();
+newSortValue.value = product.value?.sort;
+
 getProduct(slug).then((res) => {
   productRef.value = product.value;
+  newSortValue.value = product.value?.sort;
 });
 getCategories();
 getCollections();
@@ -135,6 +143,20 @@ getColors();
           Обновлен: {{ useDateFormat(product?.updated_at) }}
         </div>
       </div>
+    </div>
+
+    <div class="flex mt-10 gap-2">
+      <Input
+        label="Порядковый номер:"
+        v-model="newSortValue"
+        :value="newSortValue"
+        type="number"
+      />
+      <Button
+        class="ml-auto"
+        @click="updateProductSort(product?.id, newSortValue)"
+        >Изменить очередность</Button
+      >
     </div>
 
     <div class="grid grid-cols-[1fr_380px] gap-4 pb-10 mt-10">
