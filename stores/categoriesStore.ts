@@ -16,6 +16,22 @@ export const categoryStore = defineStore("mycategoryStore", () => {
     }).then((res) => (categories.value = res));
   };
 
+  const getWomen = async () => {
+    await $fetch(API_ROUTE + "/admin/categories/woman", {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+    }).then((res) => (categories.value = res));
+  };
+
+  const getMen = async () => {
+    await $fetch(API_ROUTE + "/admin/categories/man", {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+    }).then((res) => (categories.value = res));
+  };
+
   const getOne = async (slug: any) => {
     loading.value = true;
     await $fetch(API_ROUTE + `/admin/categories/${slug}/show`, {
@@ -166,5 +182,7 @@ export const categoryStore = defineStore("mycategoryStore", () => {
     deleteItem,
     loading,
     update,
+    getWomen,
+    getMen,
   };
 });

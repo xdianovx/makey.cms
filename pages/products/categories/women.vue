@@ -12,13 +12,13 @@ import {
 
 import Button from "~/components/ui/button/Button.vue";
 
-const { get, createNew, deleteItem } = categoryStore();
+const { getWomen, createNew, deleteItem } = categoryStore();
 const { categories } = storeToRefs(categoryStore());
 
 const createCateforyRef = ref({
   title: "",
   is_active: 1,
-  is_man: 1,
+  is_man: 0,
   is_woman: 1,
 });
 
@@ -33,7 +33,7 @@ const addCategory = async () => {
   });
 };
 
-get();
+getWomen();
 </script>
 
 <template>
@@ -46,60 +46,12 @@ get();
     </div>
 
     <div class="mt-8 flex gap-4">
-      <NuxtLink to="/products/categories" class="text-primary underline"
-        >Все</NuxtLink
-      >
+      <NuxtLink to="/products/categories" class="">Все</NuxtLink>
       <NuxtLink to="/products/categories/men" class="">Мужские</NuxtLink>
-      <NuxtLink to="/products/categories/women" class="">Женские</NuxtLink>
+      <NuxtLink to="/products/categories/women" class="text-primary underline"
+        >Женские</NuxtLink
+      >
     </div>
-
-    <Dialog :open="isCreateModalShow" :onUpdate:open="showCreateModal">
-      <DialogContent>
-        <Title>Добавить категорию</Title>
-
-        <div class="flex flex-col gap-2">
-          <Label>Название категории</Label>
-          <Input
-            required
-            placeholder="Название категории"
-            v-model="createCateforyRef.title"
-          />
-        </div>
-
-        <div class="flex flex-col gap-2">
-          <Label>Пол</Label>
-
-          <div class="flex gap-4">
-            <div class="flex gap-3">
-              <input
-                type="checkbox"
-                v-model="createCateforyRef.is_man"
-                :true-value="1"
-                :false-value="0"
-                id="a1"
-              />
-              <label for="a1" class="block leading-[100%] cursor-pointer"
-                >Мужская</label
-              >
-            </div>
-
-            <div class="flex gap-3 cursor-pointer">
-              <input
-                type="checkbox"
-                v-model="createCateforyRef.is_woman"
-                :true-value="1"
-                :false-value="0"
-                id="a2"
-              />
-              <label for="a2" class="block leading-[100%] cursor-pointer"
-                >Женская</label
-              >
-            </div>
-          </div>
-        </div>
-        <Button @click="addCategory"> Добавить</Button>
-      </DialogContent>
-    </Dialog>
 
     <div class="flex flex-col mt-10 gap-2">
       <div v-for="item in categories" class="border px-5 py-4 rounded-lg">
@@ -138,6 +90,54 @@ get();
       </div>
     </div>
   </Inner>
+
+  <Dialog :open="isCreateModalShow" :onUpdate:open="showCreateModal">
+    <DialogContent>
+      <Title>Добавить категорию</Title>
+
+      <div class="flex flex-col gap-2">
+        <Label>Название категории</Label>
+        <Input
+          required
+          placeholder="Название категории"
+          v-model="createCateforyRef.title"
+        />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <Label>Пол</Label>
+
+        <div class="flex gap-4">
+          <div class="flex gap-3">
+            <input
+              type="checkbox"
+              v-model="createCateforyRef.is_man"
+              :true-value="1"
+              :false-value="0"
+              id="a1"
+            />
+            <label for="a1" class="block leading-[100%] cursor-pointer"
+              >Мужская</label
+            >
+          </div>
+
+          <div class="flex gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              v-model="createCateforyRef.is_woman"
+              :true-value="1"
+              :false-value="0"
+              id="a2"
+            />
+            <label for="a2" class="block leading-[100%] cursor-pointer"
+              >Женская</label
+            >
+          </div>
+        </div>
+      </div>
+      <Button @click="addCategory"> Добавить</Button>
+    </DialogContent>
+  </Dialog>
 </template>
 
 <style></style>
