@@ -125,16 +125,30 @@ getProduct(slug).then((res) => {
   productRef.value = product.value;
   newSortValue.value = product.value?.sort;
 });
-getCategories();
+
+// getCategories();
 getCollections();
 getTypes();
 getGroups();
 getMaterials();
 getColors();
+
+const changeGenderHandler = () => {
+  if (productRef.value.is_man === 1) {
+    getCategories("man");
+    productRef.value.is_woman = 0;
+  } else {
+    getCategories("woman");
+    productRef.value.man = 0;
+  }
+};
+
+changeGenderHandler();
 </script>
 
 <template>
   <Inner>
+    {{ productRef.is_man }} {{ productRef.is_woman }}
     <div class="flex items-center">
       <Title>{{ product?.title }}</Title>
       <div class="ml-auto text-gray-700 text-sm">
@@ -228,6 +242,7 @@ getColors();
                 id="is_woman"
                 :false-value="0"
                 :true-value="1"
+                @change="changeGenderHandler(productRef.is_woman)"
               />
 
               <label for="is_woman" class="pl-2 leading-none cursor-pointer"
@@ -243,6 +258,7 @@ getColors();
                 id="is_man"
                 :false-value="0"
                 :true-value="1"
+                @change="changeGenderHandler(productRef.is_woman)"
               />
               <label for="is_man" class="pl-2 leading-none cursor-pointer"
                 >Для него</label
@@ -418,11 +434,11 @@ getColors();
               <input
                 type="checkbox"
                 v-model="productRef.colors"
-                :value="item.slug"
-                @update="setColors(item.slug)"
-                :id="item.slug"
+                :value="item.id"
+                @update="setColors(item.id)"
+                :id="item.id"
               />
-              <label :for="item.slug" class="block pl-2 cursor-pointer"
+              <label :for="item.id" class="block pl-2 cursor-pointer"
                 >{{ item.title }}
               </label>
               <div

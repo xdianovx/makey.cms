@@ -8,8 +8,8 @@ export const categoryStore = defineStore("mycategoryStore", () => {
   const category = ref();
   const loading = ref(false);
 
-  const get = async () => {
-    await $fetch(API_ROUTE + "/admin/categories", {
+  const get = async (gender: any = "") => {
+    await $fetch(API_ROUTE + `/admin/categories/${gender}`, {
       headers: {
         Authorization: `Bearer ${token.value}`,
       },
