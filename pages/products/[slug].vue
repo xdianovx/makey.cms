@@ -148,7 +148,6 @@ changeGenderHandler();
 
 <template>
   <Inner>
-    {{ productRef.is_man }} {{ productRef.is_woman }}
     <div class="flex items-center">
       <Title>{{ product?.title }}</Title>
       <div class="ml-auto text-gray-700 text-sm">
@@ -414,11 +413,11 @@ changeGenderHandler();
               <input
                 type="checkbox"
                 v-model="productRef.materials"
-                :value="item.slug"
-                @update="set(item.slug)"
-                :id="item.slug"
+                :value="item.id"
+                @update="set(item.id)"
+                :id="item.id"
               />
-              <label :for="item.slug" class="block pl-2 cursor-pointer">{{
+              <label :for="item.id" class="block pl-2 cursor-pointer">{{
                 item.title
               }}</label>
             </div>
