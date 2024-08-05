@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import Label from "~/components/ui/label/Label.vue";
 import Input from "~/components/ui/input/Input.vue";
 import UploadBtn from "~/components/ui/UploadBtn.vue";
-
+import VueMultiselect from "vue-multiselect";
 definePageMeta({
   layout: "product-single",
 });
@@ -177,6 +177,15 @@ changeGenderHandler();
         <!-- Каталог -->
         <div class="grid grid-cols-3 gap-2">
           <!-- Cats -->
+          <!-- <VueMultiselect
+            v-model="multiValue"
+            :options="source"
+            :multiple="true"
+            :close-on-select="true"
+            placeholder="Pick some"
+            label="name"
+            track-by="name"
+          /> -->
           <div class="flex flex-col gap-2">
             <Label>Категория</Label>
             <Select v-model="productRef.category_id">

@@ -17,7 +17,7 @@ export const categoryStore = defineStore("mycategoryStore", () => {
   };
 
   const getWomen = async () => {
-    await $fetch(API_ROUTE + "/admin/categories/woman", {
+    await $fetch(API_ROUTE + "/admin/categories/women", {
       headers: {
         Authorization: `Bearer ${token.value}`,
       },
@@ -25,7 +25,7 @@ export const categoryStore = defineStore("mycategoryStore", () => {
   };
 
   const getMen = async () => {
-    await $fetch(API_ROUTE + "/admin/categories/man", {
+    await $fetch(API_ROUTE + "/admin/categories/men", {
       headers: {
         Authorization: `Bearer ${token.value}`,
       },
