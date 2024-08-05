@@ -8,7 +8,6 @@ import { Textarea } from "@/components/ui/textarea";
 import Label from "~/components/ui/label/Label.vue";
 import Input from "~/components/ui/input/Input.vue";
 import UploadBtn from "~/components/ui/UploadBtn.vue";
-import VueMultiselect from "vue-multiselect";
 definePageMeta({
   layout: "product-single",
 });
@@ -126,26 +125,23 @@ getProduct(slug).then((res) => {
   newSortValue.value = product.value?.sort;
 });
 
-// getCategories();
-getCollections();
-getTypes();
-getGroups();
-getMaterials();
-getColors();
+const filteredTypes = ref([]);
 
-const changeGenderHandler = () => {
-  if (productRef.value.is_man === 1) {
-    getCategories("man");
-    productRef.value.is_woman = 0;
-  } else {
-    getCategories("woman");
-    productRef.value.man = 0;
-  }
+await getCategories();
+await getCollections();
+await getTypes();
+await getGroups();
+await getMaterials();
+await getColors();
+
+const getTypesByCategoriesId = (array, types) => {
+  filteredTypes.value = array.map((item) =>
+    types.filter((i) => i.category.id == item)
+  );
 };
 
-changeGenderHandler();
+getTypesByCategoriesId(productRef.value?.categories, types.value);
 </script>
-
 <template>
   <Inner>
     <div class="flex items-center">
@@ -177,46 +173,21 @@ changeGenderHandler();
         <!-- Каталог -->
         <div class="grid grid-cols-3 gap-2">
           <!-- Cats -->
-          <!-- <VueMultiselect
-            v-model="multiValue"
-            :options="source"
-            :multiple="true"
-            :close-on-select="true"
-            placeholder="Pick some"
-            label="name"
-            track-by="name"
-          /> -->
-          <div class="flex flex-col gap-2">
-            <Label>Категория</Label>
-            <Select v-model="productRef.category_id">
-              <SelectTrigger class="leading-[100%]">
-                <SelectValue :placeholder="productRef.category_id" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem :value="item.id" v-for="item in categories">{{
-                    item.title
-                  }}</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
+
+          <SharedMultiselect
+            label="Категории"
+            :list="categories"
+            v-model="productRef.categories"
+            placeholder="Выбрать коллекцию"
+          />
+
           <!-- Collections -->
-          <div class="flex flex-col gap-2">
-            <Label>Коллекция</Label>
-            <Select v-model="productRef.collection_id">
-              <SelectTrigger class="leading-[100%]">
-                <SelectValue :placeholder="productRef.collection_id" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem :value="item.id" v-for="item in collections">{{
-                    item.title
-                  }}</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
+          <SharedMultiselect
+            label="Коллекции"
+            :list="collections"
+            v-model="productRef.collections"
+            placeholder="Выбрать коллекцию"
+          />
 
           <!-- Types -->
           <div class="flex flex-col gap-2">
@@ -231,8 +202,8 @@ changeGenderHandler();
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectItem :value="item.id" v-for="item in types">{{
-                    item.title
+                  <SelectItem :value="item.id" v-for="item in filteredTypes">{{
+                    item[0]?.title
                   }}</SelectItem>
                 </SelectGroup>
               </SelectContent>
@@ -242,39 +213,6 @@ changeGenderHandler();
 
         <div class="flex gap-2">
           <div class="flex gap-6 items-center">
-            <div class="flex items-center">
-              <input
-                type="checkbox"
-                v-model="productRef.is_woman"
-                name=""
-                id="is_woman"
-                :false-value="0"
-                :true-value="1"
-                @change="changeGenderHandler(productRef.is_woman)"
-              />
-
-              <label for="is_woman" class="pl-2 leading-none cursor-pointer"
-                >Для неё</label
-              >
-            </div>
-
-            <div class="flex items-center">
-              <input
-                type="checkbox"
-                v-model="productRef.is_man"
-                name=""
-                id="is_man"
-                :false-value="0"
-                :true-value="1"
-                @change="changeGenderHandler(productRef.is_woman)"
-              />
-              <label for="is_man" class="pl-2 leading-none cursor-pointer"
-                >Для него</label
-              >
-            </div>
-
-            <div class="w-[1px] h-[18px] bg-slate-500"></div>
-
             <div class="flex items-center">
               <input
                 type="checkbox"

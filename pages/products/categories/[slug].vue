@@ -25,6 +25,8 @@ const updateCollectionRef = ref({
   is_active: 1,
   sort: 9,
   products: [],
+  is_man: 0,
+  is_woman: 0,
 });
 
 const updateCategory = () => {
@@ -110,7 +112,7 @@ const uploadMobileImage = async (e) => {
         <Input v-model="updateCollectionRef.title" />
       </div>
 
-      <div class="flex">
+      <div class="flex gap-8">
         <div class="flex items-center leading-none">
           <input
             type="checkbox"
@@ -121,6 +123,30 @@ const uploadMobileImage = async (e) => {
           />
           <label for="is_active" class="block pl-2 cursor-pointer"
             >Активно</label
+          >
+        </div>
+
+        <div class="flex items-center leading-none">
+          <input
+            type="checkbox"
+            v-model="updateCollectionRef.is_man"
+            :false-value="0"
+            id="is_man"
+            :true-value="1"
+          />
+          <label for="is_man" class="block pl-2 cursor-pointer">Мужская</label>
+        </div>
+
+        <div class="flex items-center leading-none">
+          <input
+            type="checkbox"
+            v-model="updateCollectionRef.is_woman"
+            :false-value="0"
+            id="is_woman"
+            :true-value="1"
+          />
+          <label for="is_woman" class="block pl-2 cursor-pointer"
+            >Женская</label
           >
         </div>
       </div>

@@ -14,11 +14,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
+import Label from "~/components/ui/label/Label.vue";
+import Select from "~/components/ui/select/Select.vue";
 
 // const { get, create, remove, edit } = materialsStore();
 const { get, create, remove, edit } = typesStore();
 const { types } = storeToRefs(typesStore());
+
+const { get: getCategories } = categoryStore();
+const { categories } = storeToRefs(categoryStore());
 
 const dataRef = ref({
   title: "",
@@ -41,7 +45,8 @@ const deleteItem = (slug) => {
   remove(slug);
 };
 
-get();
+await get();
+await getCategories();
 </script>
 
 <template>
@@ -56,7 +61,19 @@ get();
         v-for="item in types"
       >
         <div class="flex items-start">
-          <h2 class="font-medium leading-none">{{ item.title }}</h2>
+          <div class="flex flex-col">
+            <div class="flex gap-2">
+              <h2 class="font-medium leading-none">{{ item.title }}</h2>
+              <div class="flex items-center mt-0 text-sm">
+                <div>Товаров: {{ item.products_count }}</div>
+              </div>
+            </div>
+
+            <div class="mt-4">
+              {{ item.category?.title }} {{ item.category.is_man ? "м" : "" }}
+              {{ item.category.is_woman ? "ж" : "" }}
+            </div>
+          </div>
 
           <div class="ml-auto flex gap-1">
             <!-- Удалить -->
@@ -116,10 +133,6 @@ get();
             </Dialog>
           </div>
         </div>
-
-        <div class="flex items-center mt-0 text-sm">
-          <div>Товаров: {{ item.products_count }}</div>
-        </div>
       </div>
     </div>
 
@@ -130,6 +143,28 @@ get();
         <div class="flex flex-col gap-2">
           <Label>Название типа</Label>
           <Input required v-model="dataRef.title" />
+        </div>
+
+        <div class="flex flex-col gap-2 mt-8">
+          <Label>Тип</Label>
+
+          <Select v-model="dataRef.category_id">
+            <SelectTrigger class="leading-[100%]">
+              <SelectValue
+                placeholder="
+                  productRef.type_id ? productRef.type_id : 'Выберите тип'
+                "
+              />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem :value="item.id" v-for="item in categories">
+                  {{ item.title }} {{ item.is_man ? "м" : "" }}
+                  {{ item.is_woman ? "ж" : "" }}
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
         <Button @click="storeMaterial" class="mt-4">Добавить</Button>
       </div>

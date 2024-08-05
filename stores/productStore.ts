@@ -16,8 +16,9 @@ export const productStoreStore = defineStore("myProductStoreStore", () => {
     "categories[]": route.query["categories[]"]
       ? [...route.query["categories[]"]].map((i) => +i)
       : [],
-    is_men: "",
-    is_women: "",
+    // is_man: 1,
+    // is_woman: 1,
+    page: 1,
   });
 
   watch(
@@ -28,8 +29,9 @@ export const productStoreStore = defineStore("myProductStoreStore", () => {
         query: {
           search: s.search,
           "categories[]": s["categories[]"],
-          is_men: s.is_men,
-          is_women: s.is_women,
+          // is_man: s.is_man,
+          // is_woman: s.is_woman,
+          page: s.page,
         },
       });
 
@@ -73,7 +75,6 @@ export const productStoreStore = defineStore("myProductStoreStore", () => {
       params: value,
     }).then((res) => {
       products.value = res;
-
       isLoading.value = false;
     });
   };

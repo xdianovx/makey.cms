@@ -8,14 +8,6 @@ import Title from "@/components/ui/Title";
 const { filterProducts } = productStoreStore();
 const { products, isLoading, params } = storeToRefs(productStoreStore());
 
-watchDebounced(
-  () => params.value?.search,
-  () => {
-    params.value?.search;
-  },
-  { debounce: 200, maxWait: 5000 }
-);
-
 filterProducts(params.value);
 </script>
 
@@ -50,6 +42,29 @@ filterProducts(params.value);
           :data="item"
           :key="item.id"
         />
+        <div
+          class="mt-4 flex items-center justify-center"
+          v-if="products?.meta"
+        >
+          <div class="text-sm text-gray-500">
+            Страница {{ params.page }} из {{ products?.meta.last_page }}
+          </div>
+          <div class="flex-1"></div>
+          <button
+            class="btn border rounded-lg px-4 py-2"
+            :disabled="params.page === 1"
+            @click="params.page--"
+          >
+            Предыдущая
+          </button>
+          <button
+            class="btn border rounded-lg px-4 py-2 ml-2"
+            :disabled="params.page === products?.meta.total_pages"
+            @click="params.page++"
+          >
+            Следующая
+          </button>
+        </div>
       </div>
 
       <div
