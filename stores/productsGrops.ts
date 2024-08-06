@@ -32,6 +32,7 @@ export const productsGroupsStore = defineStore("myProductsGroupsStore", () => {
     ).then((res: any) => {
       get();
       loading.value = false;
+      toast.success("Группа товаров успешно удалена");
     });
   };
 
@@ -43,11 +44,17 @@ export const productsGroupsStore = defineStore("myProductsGroupsStore", () => {
       headers: {
         Authorization: `Bearer ${token.value}`,
       },
-    }).then((res: any) => {
-      get();
-      loading.value = false;
-      toast.success("Группа товаров успешно создана");
-    });
+    })
+      .then((res: any) => {
+        get();
+        loading.value = false;
+        toast.success("Группа товаров успешно создана");
+      })
+      .catch((e) => {
+        loading.value = false;
+
+        toast.error("Группа с таким название уже существует");
+      });
   };
 
   return { groups, get, remove, loading, create };

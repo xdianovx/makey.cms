@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from "vue-sonner";
 
 definePageMeta({});
 </script>

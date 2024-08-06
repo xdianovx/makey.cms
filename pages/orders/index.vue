@@ -1,6 +1,7 @@
 <script setup>
 import Inner from "@/components/ui/Inner";
 import Title from "@/components/ui/Title";
+import Button from "~/components/ui/button/Button.vue";
 import SearchInput from "~/components/ui/form/SearchInput.vue";
 
 const { get } = ordersStore();
@@ -11,11 +12,18 @@ get();
 
 <template>
   <Inner>
-    <div class="flex">
+    <div class="flex items-center justify-between">
       <Title>Заказы</Title>
+
+      <NuxtLink
+        class="bg-primary rounded-md text-white px-4 py-3 leading-[100%] hover:text-white hover:bg-primary/80"
+        to="/orders/create"
+      >
+        Создать заказ
+      </NuxtLink>
     </div>
 
-    <SearchInput v-model="tRef" placeholder="Поиск по заказам" class="mt-8" />
+    <!-- <SearchInput v-model="tRef" placeholder="Поиск по заказам" class="mt-8" /> -->
 
     <!-- Orders Tab -->
 

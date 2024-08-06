@@ -1,7 +1,6 @@
 <script setup>
 import Inner from "~/components/ui/Inner.vue";
 import Title from "~/components/ui/Title.vue";
-import { Plus, Settings2, Trash } from "lucide-vue-next";
 import { toast } from "vue-sonner";
 import Button from "~/components/ui/button/Button.vue";
 import Input from "~/components/ui/input/Input.vue";
@@ -16,9 +15,7 @@ const dataRef = ref({
 });
 
 const deleteItem = (id) => {
-  remove(id).then(() => {
-    toast.error("Группа успешно удалена", {});
-  });
+  remove(id);
 };
 
 const createItem = async () => {
@@ -28,17 +25,13 @@ const createItem = async () => {
     toast.error("Введите название группы");
   }
 };
-
-get();
+await get();
 </script>
 
 <template>
   <Inner>
     <div class="flex items-end">
       <Title>Группы товаров</Title>
-      <div class="ml-auto">
-        <Button> <Plus width="16" /></Button>
-      </div>
     </div>
 
     <div class="flex flex-col gap-2 mt-10" :class="{ 'opacity-20': loading }">
@@ -50,7 +43,7 @@ get();
         <div class="">
           <h2 class="font-medium">{{ item.title }}</h2>
           <div class="text-gray-700 text-sm">
-            Товаров в группе: {{ item.products.length }}
+            Товаров в группе: {{ item.products_count }}
           </div>
         </div>
 

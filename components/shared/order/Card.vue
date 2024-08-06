@@ -42,9 +42,11 @@ const props = defineProps(["data"]);
                 <span>Редактировать</span>
               </NuxtLink>
             </DropdownMenuItem>
-
             <DropdownMenuItem>
-              <NuxtLink to="/users" class="flex gap-2 items-center">
+              <NuxtLink
+                :to="`/users/${data?.client}`"
+                class="flex gap-2 items-center"
+              >
                 <User width="16" />
                 <span>Перейти к пользователю</span>
               </NuxtLink>
@@ -115,12 +117,6 @@ const props = defineProps(["data"]);
       </div>
     </div>
 
-    <!-- <div class="mt-6 flex flex-col">
-      <Product />
-      <Product />
-      <Product />
-    </div> -->
-
     <div class="mt-6">
       <div class="font-medium">Товары</div>
       <div class="bg-white px-4 py-3 mt-1 rounded-md flex flex-col gap-3">
@@ -135,7 +131,7 @@ const props = defineProps(["data"]);
         </div>
 
         <div class="mt-2 flex justify-end font-medium">
-          Итого: {{ data.total_price }}
+          Итого: {{ data.total_price }} BYN
         </div>
       </div>
     </div>

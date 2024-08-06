@@ -15,8 +15,8 @@ import AsideLink from "../ui/AsideLink.vue";
 </script>
 
 <template>
-  <aside>
-    <div class="p-5 border-r h-full flex flex-col gap-4">
+  <aside class="">
+    <div class="p-5 border-r sticky top-0 h-full flex flex-col gap-4">
       <AsideLink link="/" text="Главная">
         <House width="16" class="group-hover:text-primary" />
       </AsideLink>
