@@ -18,7 +18,7 @@ const props = defineProps(["data"]);
 <template>
   <!-- <pre>
 
-    {{ data.products }}
+    {{ data }}
   </pre> -->
   <div class="rounded-lg bg-gray-100 p-4">
     <div class="flex">
@@ -125,9 +125,10 @@ const props = defineProps(["data"]);
           v-for="item in data?.products"
           :key="item.id"
         >
-          <div>{{ item.title }} ({{ item.quantity }})</div>
+          <div>{{ item.title }} ({{ item.quantity ? item.quantity : 1 }})</div>
 
-          <div class="ml-auto">{{ item.price * item.quantity }} BYN</div>
+          <!-- {{ item.quantity < 1 ? "d" : "n" }} -->
+          <div class="ml-auto">{{ item.price }} BYN</div>
         </div>
 
         <div class="mt-2 flex justify-end font-medium">

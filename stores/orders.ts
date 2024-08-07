@@ -6,6 +6,7 @@ const token = useCookie("auth.token");
 export const ordersStore = defineStore("myOrdersStore", () => {
   const orders = ref({});
   const order = ref({});
+  const storeOrderErrors = ref({});
   const loading = ref(false);
 
   const get = async () => {
@@ -77,5 +78,34 @@ export const ordersStore = defineStore("myOrdersStore", () => {
     });
   };
 
-  return { orders, order, loading, get, getOne, updateOrder, updateStatus };
+  const storeOrder = async (data: any) => {
+    loading.value = true;
+    await $fetch(API_ROUTE + `/admin/orders/store`, {
+      method: "POST",
+      body: data,
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+      onResponseError({ response }) {
+        storeOrderErrors.value = response?._data;
+        toast.error("Ошибка обновления статуса");
+      },
+    }).then((res: any) => {
+      order.value = res;
+      loading.value = false;
+      toast.success("Статус заказа успешно обновлен");
+    });
+  };
+
+  return {
+    orders,
+    order,
+    loading,
+    get,
+    getOne,
+    updateOrder,
+    updateStatus,
+    storeOrder,
+    storeOrderErrors,
+  };
 });

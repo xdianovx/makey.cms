@@ -8,6 +8,12 @@ const props = defineProps({
     default: "Поиск...",
   },
 });
+
+const emit = defineEmits(["change"]);
+
+function onChange(event) {
+  emit("change", event.target.value);
+}
 </script>
 
 <template>
@@ -16,6 +22,7 @@ const props = defineProps({
       class="rounded-lg border w-full border-gray-300 leading-[100%] pt-[11px] pb-[12px] block pl-[44px] pr-4"
       type="text"
       v-model="model"
+      @input="onChange"
       :placeholder="placeholder"
     />
     <Search
