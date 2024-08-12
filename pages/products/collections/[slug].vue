@@ -121,6 +121,30 @@ show(slug).then(() => {
       </div>
     </div>
 
+    <div class="mt-8 flex gap-4">
+      <label for="is_man" class="flex items-center gap-2 cursor-pointer">
+        <input
+          type="checkbox"
+          id="is_man"
+          v-model="collectionRef.is_man"
+          :true-value="1"
+          :false-value="0"
+        />
+        <p>Мужская</p>
+      </label>
+
+      <label for="is_woman" class="flex items-center gap-2 cursor-pointer">
+        <input
+          type="checkbox"
+          id="is_woman"
+          v-model="collectionRef.is_woman"
+          :true-value="1"
+          :false-value="0"
+        />
+        <p>Женская</p>
+      </label>
+    </div>
+
     <hr class="mt-6" />
 
     <div class="mt-6">
