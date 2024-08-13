@@ -1,17 +1,17 @@
 <script setup>
+import { Check } from "lucide-vue-next";
 import { toast } from "vue-sonner";
+import Badge from "~/components/ui/badge/Badge.vue";
 import Inner from "~/components/ui/Inner.vue";
 import Title from "~/components/ui/Title.vue";
 import UploadBtn from "~/components/ui/UploadBtn.vue";
 
-// definePageMeta({
-//   layout: "product-single",
-// });
-
 const route = useRoute();
 const slug = route.params.slug;
+const orderRef = ref();
 
-const { getOne, update, createBanner, deleteBanner } = categoryStore();
+const { getOne, update, createBanner, changeProductOrder, deleteBanner } =
+  categoryStore();
 const { category, loading } = storeToRefs(categoryStore());
 
 const currentBannerId = ref();
@@ -34,7 +34,7 @@ const updateCategory = () => {
   update(slug, updateCollectionRef.value);
 };
 
-getOne(slug).then(() => {
+await getOne(slug).then(() => {
   updateCollectionRef.value = category?.value?.data;
 });
 
@@ -86,6 +86,13 @@ const uploadMobileImage = async (e) => {
       loading.value = false;
       toast.error(e);
     });
+};
+
+const newOrderHandler = async (productId, sort) => {
+  await changeProductOrder(slug, sort, productId);
+  await getOne(slug).then(() => {
+    updateCollectionRef.value = category?.value?.data;
+  });
 };
 </script>
 
@@ -203,6 +210,63 @@ const uploadMobileImage = async (e) => {
                 @change="uploadMobileImage"
                 @click="setCurrenBannerId(item.id)"
               />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products -->
+    <section class="mt-8">
+      <div class="flex flex-col gap-2">
+        <div
+          class="rounded-lg border p-2 pr-4 relative"
+          v-for="item in updateCollectionRef.products"
+          :key="item.id"
+        >
+          <div class="flex items-start gap-4">
+            <div class="flex flex-col gap-1">
+              <input
+                type="text"
+                v-model="item.sort"
+                class="border w-10 h-10 text-center rounded-sm"
+              />
+
+              <button
+                class="bg-primary flex items-center justify-center text-white w-10 h-10 rounded-sm"
+                @click="newOrderHandler(item.id, item.sort)"
+              >
+                <Check size="14" />
+              </button>
+            </div>
+            <img
+              :src="item.product_files[0]?.file"
+              alt=""
+              class="w-20 h-20 rounded-sm object-cover"
+            />
+
+            <div class="flex flex-col gap-1">
+              <NuxtLink
+                class="text-md font-medium hover:text-primary"
+                :to="`/products/${item.id}`"
+                >{{ item.title }}</NuxtLink
+              >
+
+              <div class="flex gap-2 items-center text-sm text-gray-700">
+                <div class="">{{ item.price }} BYN</div>
+                <div class="w-[1px] bg-gray-500 h-4"></div>
+                <div class="">{{ item.discounted_price }} BYN</div>
+                <div class="w-[1px] bg-gray-500 h-4"></div>
+                <div class=" ">SKU: {{ item.vendor_code }}</div>
+              </div>
+
+              <div class="text-sm">
+                <p>Остаток: {{ item.product_quantity }} шт</p>
+              </div>
+            </div>
+
+            <div class="ml-auto flex gap-2 items-start">
+              <Badge class="" v-if="item.is_active">Активный</Badge>
             </div>
           </div>
         </div>

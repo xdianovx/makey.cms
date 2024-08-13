@@ -107,8 +107,6 @@ export const categoryStore = defineStore("mycategoryStore", () => {
       },
 
       onResponseError({ response }) {
-        console.log(response?._data?.errors);
-
         toast.error("Ошибка удаления категории ", {
           description: response?._data?.message,
         });
@@ -171,7 +169,35 @@ export const categoryStore = defineStore("mycategoryStore", () => {
     });
   };
 
+  const changeProductOrder = async (id: any, sort: any, product_id: any) => {
+    loading.value = true;
+    await $fetch(API_ROUTE + `/admin/categories/${id}/change_order_products`, {
+      method: "POST",
+      body: {
+        sort: sort,
+        product_id: product_id,
+      },
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+
+      onResponseError({ response }) {
+        loading.value = false;
+        toast.error("Ошибка  ", {
+          description: response?._data?.message
+            ? response?._data?.message
+            : "Ошибка",
+        });
+      },
+    }).then(() => {
+      getOne(id);
+      loading.value = false;
+      toast.success("Очередь изменена!");
+    });
+  };
+
   return {
+    changeProductOrder,
     categories,
     deleteBanner,
     get,
