@@ -2,7 +2,7 @@ FROM node:lts-alpine as build-stage
 
 WORKDIR /app
 
-COPY ./mackey_admin/package.json .
+COPY ./package.json .
 
 RUN npm install
 
