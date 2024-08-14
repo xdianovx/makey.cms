@@ -16,10 +16,6 @@ const props = defineProps(["data"]);
 </script>
 
 <template>
-  <!-- <pre>
-
-    {{ data }}
-  </pre> -->
   <div class="rounded-lg bg-gray-100 p-4">
     <div class="flex">
       <Status :status-id="data.status?.id" />
@@ -74,52 +70,111 @@ const props = defineProps(["data"]);
     </div>
 
     <div class="mt-4 flex text-gray-500 text-[14px]">
-      <p>{{ data.order_num }}</p>
+      <NuxtLink :to="`/orders/${data?.id}`" class="hover:text-red-500">
+        <p>{{ data.order_num }}</p>
+      </NuxtLink>
+
       <div class="ml-auto flex items-center gap-2">
-        <div>01.02.2024</div>
-        <div class="w-[1px] bg-gray-300 h-3"></div>
-        <div>08:24</div>
+        <div>{{ useDateFormat(data.created_at) }}</div>
+        <!-- <div class="w-[1px] bg-gray-200 h-3"></div> -->
+        <!-- <div>08:24</div> -->
       </div>
     </div>
 
-    <div class="mt-4 h-[1px] bg-gray-300"></div>
+    <div class="mt-4 h-[1px] bg-gray-200"></div>
 
-    <div
-      class="mt-4 text-[14px] leading-[100%] gap-4 grid grid-cols-1"
-      v-if="data.client"
-    >
-      <div class="flex flex-col gap-3">
-        <div class="font-medium">
-          {{ data.client?.first_name }} {{ data.client?.last_name }}
-        </div>
-        <div>{{ data.client.phone }}</div>
-        <div>{{ data.client.email }}</div>
+    <!-- Получатель -->
+    <div class="flex items-center gap-2 mt-4">
+      <div class="flex items-center gap-1">
+        <p>{{ data.client_data?.first_name }}</p>
+        <p>{{ data.client_data?.last_name }}</p>
       </div>
-
-      <div class="flex flex-col gap-1">
-        <div class="font-medium">{{ data.order_delivery_method.title }}</div>
-        <div>
-          {{ data?.profile_client_address?.index }}
-          г. {{ data?.profile_client_address.locality }} ул.
-          {{ data?.profile_client_address.street }}
-          д. {{ data?.profile_client_address.house }}, кв.
-          {{ data?.profile_client_address.flat }}
-        </div>
+      <div class="ml-auto flex items-center gap-4">
+        <p>{{ data.client_data?.phone }}</p>
+        <p>{{ data.client_data?.email }}</p>
       </div>
+    </div>
 
-      <div class="flex flex-col gap-1">
-        <div class="font-medium">{{ data?.order_payment_method.title }}</div>
+    <div class="mt-4 h-[1px] bg-gray-200"></div>
+
+    <!-- Адрес -->
+    <div class="flex items-center gap-2 mt-4">
+      <div class="flex items-center gap-1">
         <div>
-          {{
-            data?.comment_payment ? data?.comment_payment : "Комментариев нет"
-          }}
+          <div class="flex gap-2">
+            <p class="font-medium">Индекс:</p>
+            <p>{{ data.profile_client_address?.index }}</p>
+          </div>
+          <div class="flex gap-2">
+            <p class="font-medium">Город:</p>
+            <p>{{ data.profile_client_address?.locality }}</p>
+          </div>
+
+          <div class="flex gap-2">
+            <p class="font-medium">Адрес:</p>
+            <p>
+              {{ data.profile_client_address?.street }}
+              д.{{ data.profile_client_address?.house }} кв.
+              {{ data.profile_client_address?.flat }}
+              этаж: {{ data.profile_client_address?.floor }} вход:
+              {{ data.profile_client_address?.entrance }}
+            </p>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="mt-6">
+    <div class="mt-4 h-[1px] bg-gray-200"></div>
+
+    <!-- Доставка -->
+    <div class="flex items-center gap-2 mt-4">
+      <div class="flex items-center gap-1">
+        <div>
+          <div class="flex gap-2">
+            <p class="font-medium">Тип доставки:</p>
+            <p>{{ data.order_delivery_method?.title }}</p>
+          </div>
+          <div class="flex gap-2">
+            <p class="font-medium">Стоимость:</p>
+            <p>{{ data.order_delivery_method?.price }} BYN</p>
+          </div>
+          <div class="flex gap-2">
+            <p class="font-medium">Описание:</p>
+            <p>{{ data.order_delivery_method?.description }} BYN</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4 h-[1px] bg-gray-200"></div>
+
+    <!-- Оплата -->
+
+    <div class="flex items-center gap-2 mt-4">
+      <div class="flex items-center gap-1">
+        <div>
+          <div class="flex gap-2">
+            <p class="font-medium">Тип оплаты:</p>
+            <p>{{ data.order_payment_method?.title }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4 h-[1px] bg-gray-200"></div>
+
+    <div class="mt-4 flex flex-col gap-2">
+      <p class="font-medium">Комментарий:</p>
+      <p class="bg-white rounded-md p-2">
+        {{ data?.comment_order ? data.comment_order : "Нет комментариев" }}
+      </p>
+    </div>
+    <div class="mt-4 h-[1px] bg-gray-200"></div>
+
+    <!-- Товары -->
+    <div class="mt-4">
       <div class="font-medium">Товары</div>
-      <div class="bg-white px-4 py-3 mt-1 rounded-md flex flex-col gap-3">
+      <div class="bg-white px-4 py-3 mt-2 rounded-md flex flex-col gap-3">
         <div
           class="leading-[100%] flex"
           v-for="item in data?.products"
@@ -127,7 +182,6 @@ const props = defineProps(["data"]);
         >
           <div>{{ item.title }} ({{ item.quantity ? item.quantity : 1 }})</div>
 
-          <!-- {{ item.quantity < 1 ? "d" : "n" }} -->
           <div class="ml-auto">{{ item.price }} BYN</div>
         </div>
 
