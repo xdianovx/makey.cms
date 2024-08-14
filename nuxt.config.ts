@@ -16,7 +16,7 @@ export default defineNuxtConfig({
   },
 
   auth: {
-    baseURL: "http://45.135.234.37:80/api/v1/admin/",
+    baseURL: "http://api.makey.by/api/v1/admin/",
 
     provider: {
       type: "local",
