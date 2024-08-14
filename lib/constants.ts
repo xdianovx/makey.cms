@@ -1,1 +1,1 @@
-export const API_ROUTE = "http://api.makey.by/api/v1";
+export const API_ROUTE = "https://api.makey.by/api/v1";
