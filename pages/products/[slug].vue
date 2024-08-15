@@ -362,11 +362,13 @@ getTypesByCategoriesId(productRef.value?.categories, types.value);
                 v-model="productRef.materials"
                 :value="item.id"
                 @update="set(item.id)"
-                :id="item.id"
+                :id="'materials' + item.id"
               />
-              <label :for="item.id" class="block pl-2 cursor-pointer">{{
-                item.title
-              }}</label>
+              <label
+                :for="'materials' + item.id"
+                class="block pl-2 cursor-pointer"
+                >{{ item.title }}</label
+              >
             </div>
           </div>
         </div>
@@ -382,9 +384,9 @@ getTypesByCategoriesId(productRef.value?.categories, types.value);
                 v-model="productRef.colors"
                 :value="item.id"
                 @update="setColors(item.id)"
-                :id="item.id"
+                :id="'colors' + item.id"
               />
-              <label :for="item.id" class="block pl-2 cursor-pointer"
+              <label :for="'colors' + item.id" class="block pl-2 cursor-pointer"
                 >{{ item.title }}
               </label>
               <div
