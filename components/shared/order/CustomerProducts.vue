@@ -15,7 +15,7 @@ const props = defineProps(["data"]);
       >
         <div class="w-20 h-20 rounded-sm overflow-hidden">
           <img
-            :src="item.product_files[0].file"
+            :src="item.product_files[0]?.file"
             class="w-full h-full object-cover block"
             alt=""
           />

@@ -92,6 +92,7 @@ export const ordersStore = defineStore("myOrdersStore", () => {
       }
     ).then((res: any) => {
       order.value = res;
+      get();
       loading.value = false;
       toast.success("Статус заказа успешно обновлен");
     });

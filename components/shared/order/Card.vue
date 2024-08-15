@@ -14,10 +14,14 @@ import { EditIcon, Trash, User } from "lucide-vue-next";
 
 const props = defineProps(["data"]);
 
-const { getInvoice } = ordersStore();
+const { getInvoice, updateStatus } = ordersStore();
 
 const getInvoiceHandler = async (id) => {
   await getInvoice(id);
+};
+
+const changeStatusHandler = async (orderId, statusId) => {
+  await updateStatus(orderId, statusId);
 };
 </script>
 
@@ -56,12 +60,22 @@ const getInvoiceHandler = async (id) => {
 
             <DropdownMenuSeparator />
             <DropdownMenuLabel>Изменить статус</DropdownMenuLabel>
-            <DropdownMenuItem>В ожидании </DropdownMenuItem>
-            <DropdownMenuItem>В обработке </DropdownMenuItem>
-            <DropdownMenuItem>Оплачен </DropdownMenuItem>
-            <DropdownMenuItem>Отправлен </DropdownMenuItem>
-            <DropdownMenuItem>Доставлен </DropdownMenuItem>
-            <DropdownMenuItem>Аннулирован </DropdownMenuItem>
+
+            <DropdownMenuItem @click="changeStatusHandler(data.id, 2)"
+              >В обработке
+            </DropdownMenuItem>
+            <DropdownMenuItem @click="changeStatusHandler(data.id, 3)"
+              >Оплачен
+            </DropdownMenuItem>
+            <DropdownMenuItem @click="changeStatusHandler(data.id, 4)"
+              >Отправлен
+            </DropdownMenuItem>
+            <DropdownMenuItem @click="changeStatusHandler(data.id, 7)"
+              >Доставлен
+            </DropdownMenuItem>
+            <DropdownMenuItem @click="changeStatusHandler(data.id, 5)"
+              >Аннулирован
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem @click="getInvoiceHandler(data.order_num)"
               >Рачпечатать чек

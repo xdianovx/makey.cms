@@ -60,9 +60,11 @@ const saveOrder = async () => {
 
 <template>
   <Inner :class="{ 'opacity-20': loading }">
-    <div class="flex">
+    <div class="flex w-full">
       <Title>Заказ {{ order?.order_num }}</Title>
-      <Status :status-id="order?.status.id" class="ml-auto" />
+      <div class="ml-auto">
+        <Status :status-id="order?.status.id" class="ml-auto" />
+      </div>
     </div>
 
     <div class="flex gap-4">
