@@ -13,6 +13,12 @@ import {
 import { EditIcon, Trash, User } from "lucide-vue-next";
 
 const props = defineProps(["data"]);
+
+const { getInvoice } = ordersStore();
+
+const getInvoiceHandler = async (id) => {
+  await getInvoice(id);
+};
 </script>
 
 <template>
@@ -56,6 +62,10 @@ const props = defineProps(["data"]);
             <DropdownMenuItem>Отправлен </DropdownMenuItem>
             <DropdownMenuItem>Доставлен </DropdownMenuItem>
             <DropdownMenuItem>Аннулирован </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem @click="getInvoiceHandler(data.order_num)"
+              >Рачпечатать чек
+            </DropdownMenuItem>
 
             <DropdownMenuSeparator />
             <DropdownMenuItem>

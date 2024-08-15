@@ -33,6 +33,25 @@ export const ordersStore = defineStore("myOrdersStore", () => {
     });
   };
 
+  const getInvoice = async (id: any) => {
+    loading.value = true;
+    await $fetch(API_ROUTE + `/admin/orders/download_invoice/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+    }).then((res: any) => {
+      function downloadFile(filePath: any) {
+        var link = document.createElement("a");
+        link.href = filePath;
+        link.download = filePath.substr(filePath.lastIndexOf("/") + 1);
+        link.click();
+      }
+      var file = window.URL.createObjectURL(res);
+
+      downloadFile(file);
+    });
+  };
+
   const updateOrder = async (id: any, body: any) => {
     loading.value = true;
     await $fetch(API_ROUTE + `/admin/orders/${id}/update?_method=PATCH`, {
@@ -107,5 +126,6 @@ export const ordersStore = defineStore("myOrdersStore", () => {
     updateStatus,
     storeOrder,
     storeOrderErrors,
+    getInvoice,
   };
 });
