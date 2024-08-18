@@ -1,18 +1,20 @@
-FROM node:lts-alpine as build-stage
+
+FROM node:lts
 
 WORKDIR /app
 
 COPY ./cms/package.json .
+COPY ./cms/package-lock.json .
 
-RUN npm install
+RUN npm i
 
 COPY ./cms .
 
 RUN npm run build
 
-EXPOSE 5000
-
+ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 ENV NUXT_HOST=0.0.0.0
-ENV NUXT_PORT=5000
+ENV NUXT_PORT=3000
 
-CMD ["node", "/app/.output/server/index.mjs"]
+CMD ["node", ".output/server/index.mjs"]
+EXPOSE 3000
