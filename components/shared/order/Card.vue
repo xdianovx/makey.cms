@@ -204,9 +204,20 @@ const changeStatusHandler = async (orderId, statusId) => {
           v-for="item in data?.products"
           :key="item.id"
         >
-          <div>{{ item.title }} ({{ item.quantity ? item.quantity : 1 }})</div>
+          <div>
+            {{ item.title }} ({{ item.quantity ? item.quantity : 1 }})
+            {{ item.colors[0].title }}
+          </div>
 
-          <div class="ml-auto">{{ item.price }} BYN</div>
+          <div class="ml-auto flex items-center gap-4">
+            <div class="">{{ item.discounted_price }} BYN</div>
+            <div
+              class="line-through"
+              v-if="item.discounted_price != item.price"
+            >
+              {{ item.price }} BYN
+            </div>
+          </div>
         </div>
 
         <div class="mt-2 flex justify-end font-medium">
