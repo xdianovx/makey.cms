@@ -7,7 +7,7 @@ import { ORDER_STATUSES } from "~/lib/constants";
 const { get } = ordersStore();
 const { orders, params } = storeToRefs(ordersStore());
 
-await get();
+await get(params.value);
 
 const handleClickOrderId = (id) => {
   if (params.value["order_statuses[]"].includes(id)) {
@@ -22,7 +22,7 @@ const handleClickOrderId = (id) => {
 <template>
   <Inner>
     <div class="flex items-center justify-between">
-      <Title>Заказы</Title>
+      <Title>Заказы {{ orders.meta?.total }}</Title>
 
       <NuxtLink
         class="bg-primary rounded-md text-white px-4 py-3 leading-[100%] hover:text-white hover:bg-primary/80"
@@ -38,18 +38,43 @@ const handleClickOrderId = (id) => {
       class="mt-8"
     />
 
-    <div class="flex gap-2 mt-4">
-      <div
-        v-for="item in ORDER_STATUSES"
-        @click="handleClickOrderId(item.id)"
-        :class="{
-          'bg-primary text-white': params['order_statuses[]']?.includes(
-            item.id
-          ),
-        }"
-        class="px-4 py-1 border border-primary rounded-lg cursor-pointer transition-colors hover:bg-primary hover:text-white"
-      >
-        {{ item.status }}
+    <div class="flex justify-between items-center mt-4">
+      <div class="flex gap-2">
+        <div
+          v-for="item in ORDER_STATUSES"
+          @click="handleClickOrderId(item.id)"
+          :class="{
+            'bg-primary text-white': params['order_statuses[]']?.includes(
+              item.id
+            ),
+          }"
+          class="px-4 py-1 border border-primary rounded-lg cursor-pointer transition-colors hover:bg-primary hover:text-white"
+        >
+          {{ item.status }}
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <div
+          class="cursor-pointer"
+          :class="{
+            'text-primary': params.sort_by === 'created_at_desc',
+          }"
+          @click="params.sort_by = 'created_at_desc'"
+        >
+          Сначала новые
+        </div>
+        <div
+          class="cursor-pointer"
+          :class="{
+            'text-primary': params.sort_by === 'created_at_asc',
+          }"
+          @click="params.sort_by = 'created_at_asc'"
+        >
+          Сначала старые
+        </div>
+
+        <!-- <div сlass="cursor-pointer">Сбросить фильтр</div> -->
       </div>
     </div>
 

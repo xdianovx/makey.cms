@@ -8,6 +8,7 @@ export const ordersStore = defineStore("myOrdersStore", () => {
   const params = ref({
     page: 1,
     search: "",
+    sort_by: "created_at_desc",
     "order_statuses[]": [],
   });
   const order = ref({});
@@ -21,13 +22,7 @@ export const ordersStore = defineStore("myOrdersStore", () => {
     (s) => {
       router.push({
         path: "/orders",
-        query: {
-          // search: s.search,
-          // "categories[]": s["categories[]"],
-          // is_man: s.is_man,
-          // is_woman: s.is_woman,
-          page: s.page,
-        },
+        query: {},
       });
 
       get(params.value);
