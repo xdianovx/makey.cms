@@ -4,17 +4,44 @@ import { API_ROUTE } from "~/lib/constants";
 const token = useCookie("auth.token");
 
 export const ordersStore = defineStore("myOrdersStore", () => {
-  const orders = ref({});
+  const orders = ref([]);
+  const params = ref({
+    page: 1,
+    search: "",
+    "order_statuses[]": [],
+  });
   const order = ref({});
   const storeOrderErrors = ref({});
   const loading = ref(false);
+  const route = useRoute();
+  const router = useRouter();
 
-  const get = async () => {
+  watch(
+    () => params.value,
+    (s) => {
+      router.push({
+        path: "/orders",
+        query: {
+          // search: s.search,
+          // "categories[]": s["categories[]"],
+          // is_man: s.is_man,
+          // is_woman: s.is_woman,
+          page: s.page,
+        },
+      });
+
+      get(params.value);
+    },
+    { deep: true }
+  );
+
+  const get = async (value: any) => {
     loading.value = true;
     await $fetch(API_ROUTE + "/admin/orders", {
       headers: {
         Authorization: `Bearer ${token.value}`,
       },
+      params: value,
     }).then((res: any) => {
       orders.value = res;
       loading.value = false;
@@ -33,6 +60,8 @@ export const ordersStore = defineStore("myOrdersStore", () => {
     });
   };
 
+  const getStatuses = async () => {};
+
   const getInvoice = async (id: any) => {
     loading.value = true;
     await $fetch(API_ROUTE + `/admin/orders/download_invoice/${id}`, {
@@ -43,11 +72,10 @@ export const ordersStore = defineStore("myOrdersStore", () => {
       function downloadFile(filePath: any) {
         var link = document.createElement("a");
         link.href = filePath;
-        link.download = filePath.substr(filePath.lastIndexOf("/") + 1);
+        link.target = "_blank";
         link.click();
       }
       var file = window.URL.createObjectURL(res);
-
       downloadFile(file);
     });
   };
@@ -128,5 +156,6 @@ export const ordersStore = defineStore("myOrdersStore", () => {
     storeOrder,
     storeOrderErrors,
     getInvoice,
+    params,
   };
 });
