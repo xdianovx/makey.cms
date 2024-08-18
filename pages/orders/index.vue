@@ -1,6 +1,7 @@
 <script setup>
 import Inner from "@/components/ui/Inner";
 import Title from "@/components/ui/Title";
+import { RefreshCcw } from "lucide-vue-next";
 import SearchInput from "~/components/ui/form/SearchInput.vue";
 import { ORDER_STATUSES } from "~/lib/constants";
 
@@ -16,6 +17,13 @@ const handleClickOrderId = (id) => {
   } else {
     params.value["order_statuses[]"].push(id);
   }
+};
+
+const clearFilter = () => {
+  params.value.page = 1;
+  params.value.search = "";
+  params.value.sort_by = "created_at_desc";
+  params.value["order_statuses[]"] = [];
 };
 </script>
 
@@ -74,7 +82,10 @@ const handleClickOrderId = (id) => {
           Сначала старые
         </div>
 
-        <!-- <div сlass="cursor-pointer">Сбросить фильтр</div> -->
+        <RefreshCcw
+          class="cursor-pointer hover:text-primary"
+          @click="clearFilter"
+        />
       </div>
     </div>
 
