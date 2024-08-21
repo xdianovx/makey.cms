@@ -100,8 +100,7 @@ const changeStatusHandler = async (orderId, statusId) => {
 
       <div class="ml-auto flex items-center gap-2">
         <div>{{ useDateFormat(data.created_at) }}</div>
-        <!-- <div class="w-[1px] bg-gray-200 h-3"></div> -->
-        <!-- <div>08:24</div> -->
+        {{ data.created_time }}
       </div>
     </div>
 
@@ -194,7 +193,7 @@ const changeStatusHandler = async (orderId, statusId) => {
       </p>
     </div>
     <div class="mt-4 h-[1px] bg-gray-200"></div>
-
+    <pre></pre>
     <!-- Товары -->
     <div class="mt-4">
       <div class="font-medium">Товары</div>
