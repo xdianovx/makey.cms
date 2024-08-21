@@ -120,71 +120,7 @@ const changeStatusHandler = async (orderId, statusId) => {
 
     <div class="mt-4 h-[1px] bg-gray-200"></div>
 
-    <!-- Адрес -->
-    <div class="flex items-center gap-2 mt-4">
-      <div class="flex items-center gap-1">
-        <div>
-          <div class="flex gap-2">
-            <p class="font-medium">Индекс:</p>
-            <p>{{ data.profile_client_address?.index }}</p>
-          </div>
-          <div class="flex gap-2">
-            <p class="font-medium">Город:</p>
-            <p>{{ data.profile_client_address?.locality }}</p>
-          </div>
-
-          <div class="flex gap-2">
-            <p class="font-medium">Адрес:</p>
-            <p>
-              {{ data.profile_client_address?.street }}
-              д.{{ data.profile_client_address?.house }} кв.
-              {{ data.profile_client_address?.flat }}
-              этаж: {{ data.profile_client_address?.floor }} вход:
-              {{ data.profile_client_address?.entrance }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="mt-4 h-[1px] bg-gray-200"></div>
-
-    <!-- Доставка -->
-    <div class="flex items-center gap-2 mt-4">
-      <div class="flex items-center gap-1">
-        <div>
-          <div class="flex gap-2">
-            <p class="font-medium">Тип доставки:</p>
-            <p>{{ data.order_delivery_method?.title }}</p>
-          </div>
-          <div class="flex gap-2">
-            <p class="font-medium">Стоимость:</p>
-            <p>{{ data.order_delivery_method?.price }} BYN</p>
-          </div>
-          <div class="flex gap-2">
-            <p class="font-medium">Описание:</p>
-            <p>{{ data.order_delivery_method?.description }} BYN</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="mt-4 h-[1px] bg-gray-200"></div>
-
     <!-- Оплата -->
-
-    <div class="flex items-center gap-2 mt-4">
-      <div class="flex items-center gap-1">
-        <div>
-          <div class="flex gap-2">
-            <p class="font-medium">Тип оплаты:</p>
-            <p>{{ data.order_payment_method?.title }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="mt-4 h-[1px] bg-gray-200"></div>
 
     <div class="mt-4 flex flex-col gap-2">
       <p class="font-medium">Комментарий:</p>
@@ -195,35 +131,6 @@ const changeStatusHandler = async (orderId, statusId) => {
     <div class="mt-4 h-[1px] bg-gray-200"></div>
     <pre></pre>
     <!-- Товары -->
-    <div class="mt-4">
-      <div class="font-medium">Товары</div>
-      <div class="bg-white px-4 py-3 mt-2 rounded-md flex flex-col gap-3">
-        <div
-          class="leading-[100%] flex"
-          v-for="item in data?.products"
-          :key="item.id"
-        >
-          <div>
-            {{ item.title }} ({{ item.quantity ? item.quantity : 1 }})
-            {{ item.colors[0].title }}
-          </div>
-
-          <div class="ml-auto flex items-center gap-4">
-            <div class="">{{ item.discounted_price }} BYN</div>
-            <div
-              class="line-through"
-              v-if="item.discounted_price != item.price"
-            >
-              {{ item.price }} BYN
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-2 flex justify-end font-medium">
-          Итого: {{ data.total_price }} BYN
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
