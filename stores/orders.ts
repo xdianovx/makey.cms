@@ -115,7 +115,7 @@ export const ordersStore = defineStore("myOrdersStore", () => {
       }
     ).then((res: any) => {
       order.value = res;
-      get();
+      get(params.value);
       loading.value = false;
       toast.success("Статус заказа успешно обновлен");
     });
