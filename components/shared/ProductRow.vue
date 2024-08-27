@@ -24,7 +24,18 @@ const props = defineProps(["data"]);
 <template>
   <div class="rounded-lg border p-2 pr-4 relative">
     <div class="flex items-start gap-4">
+      <div
+        v-if="data.product_files[0]?.is_cover"
+        class="bg-primary bg-opacity-20 rounded-sm"
+      >
+        <img
+          :src="data.product_files[0]?.file"
+          alt=""
+          class="w-20 h-20 rounded-sm object-cover"
+        />
+      </div>
       <img
+        v-else
         :src="data.product_files[0]?.file"
         alt=""
         class="w-20 h-20 rounded-sm object-cover"
